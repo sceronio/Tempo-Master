@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ContentMainFragment">
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome_to_guitar_app"
+        android:textSize="36sp"
+        android:typeface="monospace"
+        android:textAlignment="center"
+        app:fontFamily="sans-serif"
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="30dp" />
+
+    <Button
+        android:id="@+id/toMetronome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/metronome"
+        tools:layout_editor_absoluteX="147dp"
+        tools:layout_editor_absoluteY="99dp" />
+
+    <Button
+        android:id="@+id/toDrumMachine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/drum_machine" />
+
+</LinearLayout>
