@@ -40,6 +40,18 @@
         <action
             android:id="@+id/action_contentMainFragment_self"
             app:popUpTo="@id/contentMainFragment" />
+        <action
+            android:id="@+id/action_contentMainFragment_to_drumPlayBackFragment"
+            app:destination="@id/drumPlayBackFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/drumPlayBackFragment"
+        android:name="com.example.skyler.guitarapp.DrumPlayBackFragment"
+        android:label="fragment_drum_play_back"
+        tools:layout="@layout/fragment_drum_play_back" >
+        <action
+            android:id="@+id/action_drumPlayBackFragment_to_contentMainFragment"
+            app:popUpTo="@id/contentMainFragment" />
     </fragment>
 
 

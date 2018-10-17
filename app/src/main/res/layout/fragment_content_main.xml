@@ -33,4 +33,10 @@
         android:layout_height="wrap_content"
         android:text="@string/drum_machine" />
 
+    <Button
+        android:id="@+id/toDrumPlayback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Drum Playback" />
+
 </LinearLayout>

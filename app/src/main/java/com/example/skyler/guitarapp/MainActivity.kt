@@ -9,8 +9,8 @@ import androidx.navigation.Navigation
 
 
 class MainActivity : AppCompatActivity(), MetronomeFragment.OnFragmentInteractionListener,
-RecorderFragment.OnFragmentInteractionListener, DrumFragment.OnFragmentInteractionListener,
-        ContentMainFragment.OnFragmentInteractionListener
+        RecorderFragment.OnFragmentInteractionListener, DrumFragment.OnFragmentInteractionListener,
+        ContentMainFragment.OnFragmentInteractionListener, DrumPlayBackFragment.OnFragmentInteractionListener
 {
 
     override fun onCreate(savedInstanceState: Bundle?) {
