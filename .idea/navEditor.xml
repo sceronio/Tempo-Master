@@ -13,8 +13,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="468" />
-                            <option name="y" value="-432" />
+                            <option name="x" value="496" />
+                            <option name="y" value="538" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -25,6 +25,11 @@
                               </value>
                             </entry>
                             <entry key="action_contentMainFragment_to_drumFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_contentMainFragment_to_drumPlayBackFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -44,8 +49,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="115" />
+                            <option name="x" value="980" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -65,9 +70,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1273" />
-                            <option name="y" value="-876" />
+                            <option name="x" value="980" />
+                            <option name="y" value="752" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_drumPlayBackFragment_to_contentMainFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -77,8 +91,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="980" />
-                            <option name="y" value="115" />
+                            <option name="x" value="12" />
+                            <option name="y" value="645" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -89,6 +103,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="recorderFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-220" />
+                            <option name="y" value="-266" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

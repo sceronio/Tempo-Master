@@ -39,4 +39,10 @@
         android:layout_height="wrap_content"
         android:text="Drum Playback" />
 
+    <Button
+        android:id="@+id/toRecorderTest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recorder Test" />
+
 </LinearLayout>

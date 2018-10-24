@@ -7,4 +7,5 @@
     <string name="welcome_to_guitar_app">Welcome to Guitar App</string>
     <string name="metronome">Metronome</string>
     <string name="drum_machine">Drum Machine</string>
+    <string name="kick">Kick</string>
 </resources>

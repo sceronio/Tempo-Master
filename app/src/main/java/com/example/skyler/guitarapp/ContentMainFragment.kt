@@ -63,6 +63,12 @@ class ContentMainFragment : Fragment() {
             //val directions = ContentMainFragmentDirections.action_contentMainFragment_to_drumP
             NavHostFragment.findNavController(this).navigate(directions)
         }
+
+        toRecorderTest.setOnClickListener {
+            val directions = ContentMainFragmentDirections.action_contentMainFragment_to_recorderFragment()
+            //val directions = ContentMainFragmentDirections.action_contentMainFragment_to_drumP
+            NavHostFragment.findNavController(this).navigate(directions)
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

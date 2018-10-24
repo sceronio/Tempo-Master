@@ -43,6 +43,9 @@
         <action
             android:id="@+id/action_contentMainFragment_to_drumPlayBackFragment"
             app:destination="@id/drumPlayBackFragment" />
+        <action
+            android:id="@+id/action_contentMainFragment_to_recorderFragment"
+            app:destination="@id/recorderFragment" />
     </fragment>
     <fragment
         android:id="@+id/drumPlayBackFragment"
@@ -53,6 +56,10 @@
             android:id="@+id/action_drumPlayBackFragment_to_contentMainFragment"
             app:popUpTo="@id/contentMainFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/recorderFragment"
+        android:name="com.example.skyler.guitarapp.RecorderFragment"
+        android:label="RecorderFragment" />
 
 
 </navigation>

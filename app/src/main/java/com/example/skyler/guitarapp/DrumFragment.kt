@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_drum.*
+import kotlinx.android.synthetic.main.fragment_recorder.*
+import kotlinx.android.synthetic.main.fragment_recorder.view.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -29,6 +32,7 @@ class DrumFragment : Fragment() {
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -41,6 +45,20 @@ class DrumFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_drum, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        included_recorder.recordButton.setOnClickListener {
+            ClickUtils.clickRecord(included_recorder.recordButton)
+        }
+        included_recorder.stopButton.setOnClickListener{
+            ClickUtils.clickStop(recordButton)
+        }
+        included_recorder.playButton.setOnClickListener{
+            ClickUtils.clickPlay(included_recorder.playButton)
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
