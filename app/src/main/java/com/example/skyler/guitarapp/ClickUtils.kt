@@ -27,7 +27,7 @@ object ClickUtils {
 
 
     fun animate(button : Button) {
-        var animationLength : Long = 35
+        val animationLength : Long = 35
 
         val scaleDownX = ObjectAnimator.ofFloat(button, "scaleX", 0.6f)
         val scaleDownY = ObjectAnimator.ofFloat(button, "scaleY", 0.6f)

@@ -1,6 +1,7 @@
 package com.example.skyler.guitarapp
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,6 +12,7 @@ import android.widget.Button
 import kotlinx.android.synthetic.main.fragment_drum.*
 import kotlinx.android.synthetic.main.fragment_recorder.*
 import kotlinx.android.synthetic.main.fragment_recorder.view.*
+import java.lang.NullPointerException
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -32,6 +34,8 @@ class DrumFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    var mediaPlayer: MediaPlayer? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +44,7 @@ class DrumFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        mediaPlayer = MediaPlayer.create(context, R.raw.emt_rimshot)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +55,10 @@ class DrumFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var buttonMap : Map<String, Button> = hashMapOf(ClickUtils.getPlay() to playButton,
+        print("****inonviewcreated****")
+
+        //code for recorder fragment
+        val buttonMap : Map<String, Button> = hashMapOf(ClickUtils.getPlay() to playButton,
                 ClickUtils.getRecord() to recordButton,
                 ClickUtils.getStop() to stopButton)
         recordButton.setOnClickListener {
@@ -63,6 +71,26 @@ class DrumFragment : Fragment() {
 
         playButton.setOnClickListener {
             ClickUtils.clickPlay(buttonMap)
+        }
+
+
+
+        // set up Java media player listeners
+        mediaPlayer!!.setOnPreparedListener(object : MediaPlayer.OnPreparedListener {
+
+            override fun onPrepared(mediaPlayer: MediaPlayer) {
+                mediaPlayer.start()
+            }
+
+        })
+
+        mediaPlayer?.setVolume(100.0f, 100.0f)
+        mediaPlayer!!.prepareAsync()
+
+
+        //code for each of the drum buttons
+        rimButton.setOnClickListener {
+            print("****click detected****")
         }
     }
 
