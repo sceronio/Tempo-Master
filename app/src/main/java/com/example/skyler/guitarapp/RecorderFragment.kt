@@ -1,8 +1,6 @@
 package com.example.skyler.guitarapp
 
-import android.animation.ObjectAnimator
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -10,13 +8,8 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment
-import kotlinx.android.synthetic.main.fragment_content_main.*
 import kotlinx.android.synthetic.main.fragment_recorder.*
-import android.R.attr.start
-import android.animation.AnimatorSet
-
-
+import android.widget.Button
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -58,29 +51,25 @@ class RecorderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var buttonMap : Map<String, Button> = hashMapOf(ClickUtils.getPlay() to playButton,
+                                                        ClickUtils.getRecord() to recordButton,
+                                                        ClickUtils.getStop() to stopButton)
         recordButton.setOnClickListener {
-            ClickUtils.clickRecord(recordButton)
+            ClickUtils.clickRecord(buttonMap)
         }
 
         stopButton.setOnClickListener {
-            ClickUtils.clickStop(recordButton)
+            ClickUtils.clickStop(buttonMap)
         }
 
         playButton.setOnClickListener {
-            ClickUtils.clickPlay(playButton)
+            ClickUtils.clickPlay(buttonMap)
         }
     }
 
     private fun (() -> Any).withDelay(delay: Long) {
         Handler().postDelayed({this} , delay)
     }
-
-    /*//use this for delay on button press changes
-    private fun (() -> Any).withDelay(delay: Long) {
-        val temp: Runnable = Runnable { this }
-        Handler().postDelayed(temp , delay)
-    }*/
-
 
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {

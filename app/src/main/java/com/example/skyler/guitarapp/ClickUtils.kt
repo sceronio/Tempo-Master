@@ -2,20 +2,28 @@ package com.example.skyler.guitarapp
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.content.Context
-import android.net.Uri
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import kotlinx.android.synthetic.main.fragment_recorder.*
+import java.lang.NullPointerException
 
 object ClickUtils {
 
     private var recording = false
     private var playing = false
+    private val RECORD = "record"
+    private val STOP = "stop"
+    private val PLAY = "play"
+
+    fun getRecord() : String {
+        return this.RECORD
+    }
+
+    fun getStop() : String {
+        return this.STOP
+    }
+
+    fun getPlay() : String {
+        return this.PLAY
+    }
 
 
     fun animate(button : Button) {
@@ -40,7 +48,8 @@ object ClickUtils {
         scaleUp.start()
     }
 
-    fun clickRecord(recordButton : Button) {
+    fun clickRecord(buttons : Map<String, Button>) {
+        val recordButton : Button = buttons.get(RECORD) ?: throw NullPointerException("button RECORD not found")
         animate(recordButton)
         if(recording) {
             recordButton.setBackgroundResource(R.drawable.record_button)
@@ -53,8 +62,10 @@ object ClickUtils {
         }
     }
 
-    fun clickStop(recordButton : Button) {
-        animate(recordButton)
+    fun clickStop(buttons : Map<String, Button>) {
+        val recordButton : Button = buttons.get(RECORD) ?: throw NullPointerException("button RECORD not found")
+        val stopButton : Button = buttons.get(STOP) ?: throw NullPointerException("button STOP not found")
+        animate(stopButton)
         if(recording) {
             recordButton.setBackgroundResource(R.drawable.record_button)
             //stopButton.setBackgroundResource(R.drawable.stop_button)
@@ -62,7 +73,8 @@ object ClickUtils {
         }
     }
 
-    fun clickPlay(playButton : Button) {
+    fun clickPlay(buttons : Map<String, Button>) {
+        val playButton : Button = buttons.get(PLAY) ?: throw NullPointerException("button PLAY not found")
         animate(playButton)
         if(playing) {
             playButton.setBackgroundResource(R.drawable.play_button)

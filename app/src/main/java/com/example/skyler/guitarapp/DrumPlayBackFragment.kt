@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import kotlinx.android.synthetic.main.fragment_drum.*
 import kotlinx.android.synthetic.main.fragment_recorder.*
 import kotlinx.android.synthetic.main.fragment_recorder.view.*
@@ -53,18 +54,21 @@ class DrumPlayBackFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var buttonMap : Map<String, Button> = hashMapOf(ClickUtils.getPlay() to playButton,
+                ClickUtils.getRecord() to recordButton,
+                ClickUtils.getStop() to stopButton)
+        recordButton.setOnClickListener {
+            ClickUtils.clickRecord(buttonMap)
+        }
 
-        included_recorder.recordButton.setOnClickListener {
-            ClickUtils.clickRecord(included_recorder.recordButton)
+        stopButton.setOnClickListener {
+            ClickUtils.clickStop(buttonMap)
         }
-        included_recorder.stopButton.setOnClickListener{
-            ClickUtils.clickStop(recordButton)
-        }
-        included_recorder.playButton.setOnClickListener{
-            ClickUtils.clickPlay(included_recorder.playButton)
+
+        playButton.setOnClickListener {
+            ClickUtils.clickPlay(buttonMap)
         }
     }
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
