@@ -44,7 +44,6 @@ class DrumFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        mediaPlayer = MediaPlayer.create(context, R.raw.emt_rimshot)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -59,8 +58,9 @@ class DrumFragment : Fragment() {
 
         //code for recorder fragment
         val buttonMap : Map<String, Button> = hashMapOf(ClickUtils.getPlay() to playButton,
-                ClickUtils.getRecord() to recordButton,
-                ClickUtils.getStop() to stopButton)
+         ClickUtils.getRecord() to recordButton,
+         ClickUtils.getStop() to stopButton)
+
         recordButton.setOnClickListener {
             ClickUtils.clickRecord(buttonMap)
         }
@@ -73,25 +73,32 @@ class DrumFragment : Fragment() {
             ClickUtils.clickPlay(buttonMap)
         }
 
-
-
-        // set up Java media player listeners
-        mediaPlayer!!.setOnPreparedListener(object : MediaPlayer.OnPreparedListener {
-
-            override fun onPrepared(mediaPlayer: MediaPlayer) {
-                mediaPlayer.start()
-            }
-
-        })
-
-        mediaPlayer?.setVolume(100.0f, 100.0f)
-        mediaPlayer!!.prepareAsync()
-
-
+        /**
+         * When a drum button is pressed, it is added to a list. Drum playback will
+         * work by simply playing back the drums you pressed in the same order. The problem that
+         * this will cause is all the sounds being played over each-other or robotically at evenly
+         * spaced intervals. I need to keep track of the small time gaps between button presses and
+         * find a way to insert those gaps during drum playback.
+         */
         //code for each of the drum buttons
         rimButton.setOnClickListener {
-            print("****click detected****")
+            mediaPlayer?.release()
+            mediaPlayer = MediaPlayer.create(context, R.raw.emt_rimshot)
+            mediaPlayer?.start()
         }
+        snareButton.setOnClickListener {
+            mediaPlayer?.release()
+            mediaPlayer = MediaPlayer.create(context, R.raw.mc_snare_4b)
+            mediaPlayer?.start()
+        }
+        crashButton.setOnClickListener {
+            mediaPlayer?.release()
+            mediaPlayer = MediaPlayer.create(context, R.raw.newjr_16)
+            mediaPlayer?.start()
+        }
+        
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
