@@ -12,8 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import kotlinx.android.synthetic.main.fragment_drum.*
 import kotlinx.android.synthetic.main.fragment_recorder.*
-import kotlinx.android.synthetic.main.fragment_recorder.view.*
-import java.lang.NullPointerException
+import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -41,6 +40,7 @@ class DrumFragment : Fragment() {
     var soundMap = hashMapOf(1 to R.raw.newjr_16, 2 to R.raw.newjr_13, 3 to R.raw.emt_rimshot,
                              4 to R.raw.newjr_19, 5 to R.raw.newjr_16, 6 to R.raw.mc_snare_4b,
                              7 to R.raw.newjr_16, 8 to R.raw.newjr_16)
+    var timer : Timer = Timer()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +80,7 @@ class DrumFragment : Fragment() {
             ClickUtils.clickPlay(buttonMap)
 
             //playRecordedBeat()
+            playNext(0)
             //playback the current recorded list of drum beats
             for(drum in drumRecordingList) {
                 print("*****")
@@ -124,11 +125,21 @@ class DrumFragment : Fragment() {
     fun playRecordedBeat() {
         var delay : Long = 500
 
-        for(soundNumber in drumRecordingList) {
-            mediaPlayer?.release()
-            val mediaPlayer = MediaPlayer.create(context, soundMap[soundNumber] ?: 0)
-            Handler().postDelayed({mediaPlayer.start()}, delay)
-        }
+
+    }
+
+    fun playNext(index: Int) {
+        timer.schedule(object : TimerTask() {
+            override fun run() {
+                //mp.reset
+                mediaPlayer?.release()
+                mediaPlayer = MediaPlayer.create(context, soundMap.get(drumRecordingList.get(index)) ?: 0)
+                mediaPlayer?.start()
+                if (drumRecordingList.size > index + 1) {
+                    playNext(index + 1)
+                }
+            }
+        }, 1000)
     }
 
     //TODO: create a hashmap that maps numbers 1-6 inclusive to a sound uri. Use the number
@@ -144,7 +155,7 @@ class DrumFragment : Fragment() {
 
             //keep track of what was pressed if we are recording
             if(recording) {
-                //drumRecordingList.add(soundNumber)
+                drumRecordingList.add(soundNumber)
             }
         }.start()
     }
