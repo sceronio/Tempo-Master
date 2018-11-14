@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -34,13 +35,18 @@ class DrumFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+
+    //mediaPlayer variables
     var mediaPlayer: MediaPlayer? = null
     var drumRecordingList: MutableList<Int> = mutableListOf()
-    var recording = false
+    var timer : Timer = Timer()
     var soundMap = hashMapOf(1 to R.raw.newjr_16, 2 to R.raw.newjr_13, 3 to R.raw.emt_rimshot,
                              4 to R.raw.newjr_19, 5 to R.raw.newjr_16, 6 to R.raw.mc_snare_4b,
                              7 to R.raw.newjr_16, 8 to R.raw.newjr_16)
-    var timer : Timer = Timer()
+
+    //UI state variables
+    var buttonMap : Map<String, Button> = hashMapOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,29 +68,26 @@ class DrumFragment : Fragment() {
         print("****inonviewcreated****")
 
         //code for recorder fragment
-        val buttonMap : Map<String, Button> = hashMapOf(ClickUtils.getPlay() to playButton,
+        this.buttonMap = hashMapOf(ClickUtils.getPlay() to playButton,
          ClickUtils.getRecord() to recordButton,
          ClickUtils.getStop() to stopButton)
 
         recordButton.setOnClickListener {
             ClickUtils.clickRecord(buttonMap)
-            toggleRecording()
+            drumRecordingList = mutableListOf()
         }
 
         stopButton.setOnClickListener {
             ClickUtils.clickStop(buttonMap)
-            setRecordingFalse()
         }
 
         playButton.setOnClickListener {
+            //togglePlaying()
             ClickUtils.clickPlay(buttonMap)
 
-            //playRecordedBeat()
-            playNext(0)
-            //playback the current recorded list of drum beats
-            for(drum in drumRecordingList) {
-                print("*****")
-                print(drum)
+            //play the stuff I have recorded
+            if(ClickUtils.isPlaying()){
+                playNext(0)
             }
         }
 
@@ -122,24 +125,22 @@ class DrumFragment : Fragment() {
         }
     }
 
-    fun playRecordedBeat() {
-        var delay : Long = 500
-
-
-    }
-
     fun playNext(index: Int) {
         timer.schedule(object : TimerTask() {
             override fun run() {
-                //mp.reset
                 mediaPlayer?.release()
                 mediaPlayer = MediaPlayer.create(context, soundMap.get(drumRecordingList.get(index)) ?: 0)
                 mediaPlayer?.start()
                 if (drumRecordingList.size > index + 1) {
                     playNext(index + 1)
                 }
+                else {
+                    Looper.prepare()
+                    Handler().post({ClickUtils.clickPlay(buttonMap)})
+                    Looper.loop()
+                }
             }
-        }, 1000)
+        }, 500)
     }
 
     //TODO: create a hashmap that maps numbers 1-6 inclusive to a sound uri. Use the number
@@ -154,28 +155,13 @@ class DrumFragment : Fragment() {
             mediaPlayer?.start()
 
             //keep track of what was pressed if we are recording
-            if(recording) {
+            if(ClickUtils.isRecording()) {
                 drumRecordingList.add(soundNumber)
             }
         }.start()
     }
 
-    fun toggleRecording() {
-        if(this.recording) {
-            setRecordingFalse()
-        }
-        else {
-            setRecordingTrue()
-        }
-    }
 
-    fun setRecordingFalse() {
-        this.recording = false
-    }
-
-    fun setRecordingTrue() {
-        this.recording = true
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {

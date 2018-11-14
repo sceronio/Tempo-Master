@@ -25,6 +25,14 @@ object ClickUtils {
         return this.PLAY
     }
 
+    fun isPlaying() : Boolean {
+        return this.playing
+    }
+
+    fun isRecording() : Boolean {
+        return this.recording
+    }
+
 
     fun animate(button : Button) {
         val animationLength : Long = 35
@@ -85,5 +93,4 @@ object ClickUtils {
             playing = true
         }
     }
-
 }
