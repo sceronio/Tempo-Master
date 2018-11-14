@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -35,8 +36,11 @@ class DrumFragment : Fragment() {
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
     var mediaPlayer: MediaPlayer? = null
-
-
+    var drumRecordingList: MutableList<Int> = mutableListOf()
+    var recording = false
+    var soundMap = hashMapOf(1 to R.raw.newjr_16, 2 to R.raw.newjr_13, 3 to R.raw.emt_rimshot,
+                             4 to R.raw.newjr_19, 5 to R.raw.newjr_16, 6 to R.raw.mc_snare_4b,
+                             7 to R.raw.newjr_16, 8 to R.raw.newjr_16)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +48,7 @@ class DrumFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        mediaPlayer = MediaPlayer.create(context, R.raw.newjr_16)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -63,14 +68,23 @@ class DrumFragment : Fragment() {
 
         recordButton.setOnClickListener {
             ClickUtils.clickRecord(buttonMap)
+            toggleRecording()
         }
 
         stopButton.setOnClickListener {
             ClickUtils.clickStop(buttonMap)
+            setRecordingFalse()
         }
 
         playButton.setOnClickListener {
             ClickUtils.clickPlay(buttonMap)
+
+            //playRecordedBeat()
+            //playback the current recorded list of drum beats
+            for(drum in drumRecordingList) {
+                print("*****")
+                print(drum)
+            }
         }
 
         /**
@@ -81,24 +95,75 @@ class DrumFragment : Fragment() {
          * find a way to insert those gaps during drum playback.
          */
         //code for each of the drum buttons
+        crashButton.setOnClickListener {
+            onDrumButtonPressed(1)
+        }
+        tomButton.setOnClickListener {
+            onDrumButtonPressed(2)
+        }
         rimButton.setOnClickListener {
-            mediaPlayer?.release()
-            mediaPlayer = MediaPlayer.create(context, R.raw.emt_rimshot)
-            mediaPlayer?.start()
+            onDrumButtonPressed(3)
+        }
+        clapButton.setOnClickListener {
+            onDrumButtonPressed(4)
+        }
+        kickButton.setOnClickListener {
+            onDrumButtonPressed(5)
         }
         snareButton.setOnClickListener {
-            mediaPlayer?.release()
-            mediaPlayer = MediaPlayer.create(context, R.raw.mc_snare_4b)
-            mediaPlayer?.start()
+            onDrumButtonPressed(6)
         }
-        crashButton.setOnClickListener {
-            mediaPlayer?.release()
-            mediaPlayer = MediaPlayer.create(context, R.raw.newjr_16)
-            mediaPlayer?.start()
+        oHatButton.setOnClickListener {
+            onDrumButtonPressed(7)
         }
-        
+        cHatButton.setOnClickListener {
+            onDrumButtonPressed(8)
+        }
+    }
 
+    fun playRecordedBeat() {
+        var delay : Long = 500
 
+        for(soundNumber in drumRecordingList) {
+            mediaPlayer?.release()
+            val mediaPlayer = MediaPlayer.create(context, soundMap[soundNumber] ?: 0)
+            Handler().postDelayed({mediaPlayer.start()}, delay)
+        }
+    }
+
+    //TODO: create a hashmap that maps numbers 1-6 inclusive to a sound uri. Use the number
+    // to retrieve the uri that is supposed to be played from the map. This will allow easy changing of
+    // sound sets by simply changing the hashmap
+    fun onDrumButtonPressed(soundNumber: Int) {
+
+        //make mediaPlayer in a different thread
+        Thread {
+            mediaPlayer?.release()
+            mediaPlayer = MediaPlayer.create(context, soundMap.get(soundNumber) ?: 0)
+            mediaPlayer?.start()
+
+            //keep track of what was pressed if we are recording
+            if(recording) {
+                //drumRecordingList.add(soundNumber)
+            }
+        }.start()
+    }
+
+    fun toggleRecording() {
+        if(this.recording) {
+            setRecordingFalse()
+        }
+        else {
+            setRecordingTrue()
+        }
+    }
+
+    fun setRecordingFalse() {
+        this.recording = false
+    }
+
+    fun setRecordingTrue() {
+        this.recording = true
     }
 
     // TODO: Rename method, update argument and hook method into UI event
