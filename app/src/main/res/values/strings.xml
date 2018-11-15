@@ -8,4 +8,7 @@
     <string name="metronome">Metronome</string>
     <string name="drum_machine">Drum Machine</string>
     <string name="kick">Kick</string>
+    <string name="defaultname">defaultName</string>
+    <string name="save">Save</string>
+    <string name="discard">Discard</string>
 </resources>

@@ -39,6 +39,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_contentMainFragment_to_recorderFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -49,8 +54,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="980" />
-                            <option name="y" value="12" />
+                            <option name="x" value="1349" />
+                            <option name="y" value="-113" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -70,8 +75,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="980" />
-                            <option name="y" value="752" />
+                            <option name="x" value="1351" />
+                            <option name="y" value="1026" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -91,8 +96,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="645" />
+                            <option name="x" value="-602" />
+                            <option name="y" value="733" />
                           </Point>
                         </option>
                         <option name="myPositions">
