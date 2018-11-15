@@ -39,7 +39,7 @@ class DrumFragment : Fragment() {
     //mediaPlayer variables
     var mediaPlayer: MediaPlayer? = null
     var drumRecordingList: MutableList<Int> = mutableListOf()
-    var timer : Timer = Timer()
+    //var timer : Timer = Timer()
     var soundMap = hashMapOf(1 to R.raw.newjr_16, 2 to R.raw.newjr_13, 3 to R.raw.emt_rimshot,
                              4 to R.raw.newjr_19, 5 to R.raw.newjr_16, 6 to R.raw.mc_snare_4b,
                              7 to R.raw.newjr_16, 8 to R.raw.newjr_16)
@@ -67,13 +67,14 @@ class DrumFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         print("****inonviewcreated****")
 
-        //code for recorder fragment
+        //code for recorder fragment buttons
         this.buttonMap = hashMapOf(ClickUtils.getPlay() to playButton,
          ClickUtils.getRecord() to recordButton,
          ClickUtils.getStop() to stopButton)
 
         recordButton.setOnClickListener {
             ClickUtils.clickRecord(buttonMap)
+            //reset list of recorded sounds
             drumRecordingList = mutableListOf()
         }
 
@@ -82,11 +83,11 @@ class DrumFragment : Fragment() {
         }
 
         playButton.setOnClickListener {
-            //togglePlaying()
             ClickUtils.clickPlay(buttonMap)
 
-            //play the stuff I have recorded
+            //check if pressing the button set the state to playing, or not playing
             if(ClickUtils.isPlaying()){
+                //play the stuff I have recorded
                 playNext(0)
             }
         }
@@ -94,8 +95,8 @@ class DrumFragment : Fragment() {
         /**
          * When a drum button is pressed, it is added to a list. Drum playback will
          * work by simply playing back the drums you pressed in the same order. The problem that
-         * this will cause is all the sounds being played over each-other or robotically at evenly
-         * spaced intervals. I need to keep track of the small time gaps between button presses and
+         * this will cause is all the sounds being played over each-other or at evenly
+         * spaced intervals (which is wrong). I need to keep track of the small time gaps between button presses and
          * find a way to insert those gaps during drum playback.
          */
         //code for each of the drum buttons
@@ -125,7 +126,9 @@ class DrumFragment : Fragment() {
         }
     }
 
+    //play the next sound in the list of recorded sounds
     fun playNext(index: Int) {
+        var timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
                 mediaPlayer?.release()
@@ -143,9 +146,7 @@ class DrumFragment : Fragment() {
         }, 500)
     }
 
-    //TODO: create a hashmap that maps numbers 1-6 inclusive to a sound uri. Use the number
-    // to retrieve the uri that is supposed to be played from the map. This will allow easy changing of
-    // sound sets by simply changing the hashmap
+    //play drum sound and add to list of recorded sounds if we are recording
     fun onDrumButtonPressed(soundNumber: Int) {
 
         //make mediaPlayer in a different thread
@@ -159,27 +160,6 @@ class DrumFragment : Fragment() {
                 drumRecordingList.add(soundNumber)
             }
         }.start()
-    }
-
-
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
     }
 
     /**
@@ -216,5 +196,19 @@ class DrumFragment : Fragment() {
                         putString(ARG_PARAM2, param2)
                     }
                 }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
     }
 }
