@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.widget.Button
 import java.lang.NullPointerException
 
+//this object keeps track of the state of the recorder buttons
 object ClickUtils {
 
     private var recording = false

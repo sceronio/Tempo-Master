@@ -38,15 +38,12 @@ class DrumFragment : Fragment() {
 
     //mediaPlayer variables
     var mediaPlayer: MediaPlayer? = null
-    var drumRecordingList = mutableListOf<Int>()
     var soundMap = hashMapOf(1 to R.raw.newjr_16, 2 to R.raw.newjr_13, 3 to R.raw.emt_rimshot,
                              4 to R.raw.newjr_19, 5 to R.raw.newjr_16, 6 to R.raw.mc_snare_4b,
                              7 to R.raw.newjr_16, 8 to R.raw.newjr_16)
 
-    //button delay variables
-    var previousTime : Long = 0
-    var currentTime : Long = 0
-    var delayList = mutableListOf<Long>()
+    //object representing a recorded beat, contains list of drums pressed and list of delays
+    var recordedBeat = com.example.skyler.guitarapp.RecordedBeat()
 
     //UI state variables
     var buttonMap : Map<String, Button> = hashMapOf()
@@ -74,7 +71,7 @@ class DrumFragment : Fragment() {
 
         recordButton.setOnClickListener {
             //reset the variables that keep track of the state of the currently recorded beat
-            resetRecordedBeat()
+            recordedBeat.reset()
             ClickUtils.clickRecord(buttonMap)
         }
 
@@ -85,10 +82,6 @@ class DrumFragment : Fragment() {
         playButton.setOnClickListener {
             ClickUtils.clickPlay(buttonMap)
 
-            //add a 0 to the front of delayList because there shouldnt be a delay on the first
-            // button press
-            delayList.add(0, 0L)
-
             //check if pressing the button set the state to playing, or not playing
             if(ClickUtils.isPlaying()){
                 //play the stuff I have recorded
@@ -96,13 +89,6 @@ class DrumFragment : Fragment() {
             }
         }
 
-        /**
-         * When a drum button is pressed, it is added to a list. Drum playback will
-         * work by simply playing back the drums you pressed in the same order. The problem that
-         * this will cause is all the sounds being played over each-other or at evenly
-         * spaced intervals (which is wrong). I need to keep track of the small time gaps between button presses and
-         * find a way to insert those gaps during drum playback.
-         */
         //code for each of the drum buttons
         crashButton.setOnClickListener {
             onDrumButtonPressed(1)
@@ -136,9 +122,9 @@ class DrumFragment : Fragment() {
         timer.schedule(object : TimerTask() {
             override fun run() {
                 mediaPlayer?.release()
-                mediaPlayer = MediaPlayer.create(context, soundMap.get(drumRecordingList.get(index)) ?: 0)
+                mediaPlayer = MediaPlayer.create(context, soundMap[recordedBeat.getSound(index)] ?: 0)
                 mediaPlayer?.start()
-                if (drumRecordingList.size > index + 1) {
+                if (recordedBeat.getSize() > index + 1) {
                     playNext(index + 1)
                 }
                 else {
@@ -147,7 +133,7 @@ class DrumFragment : Fragment() {
                     Looper.loop()
                 }
             }
-        }, delayList[index])
+        }, recordedBeat.getDelay(index))
     }
 
     //play drum sound and add to list of recorded sounds if we are recording
@@ -161,38 +147,9 @@ class DrumFragment : Fragment() {
 
             //keep track of what was pressed if we are recording
             if(ClickUtils.isRecording()) {
-                drumRecordingList.add(soundNumber)
-
-                //keep track of delay
-                //if this is the first time we are pressing a button when recording,
-                // don't add a delay
-                if(previousTime == 0L) {
-                    previousTime = System.currentTimeMillis()
-                }
-                else {
-                    currentTime = System.currentTimeMillis()
-
-                    //subtract 100 from the delay because the method calls are not fast enough
-                    // for the delays to sound totally correct
-                    var delay = currentTime - previousTime - 100
-                    if(delay < 0) {
-                        delay = 0
-                    }
-                    delayList.add(delay)
-
-                    previousTime = currentTime
-                }
+                recordedBeat.addBeat(soundNumber)
             }
         }.start()
-    }
-
-    fun resetRecordedBeat() {
-        //reset list of recorded sounds
-        drumRecordingList = mutableListOf()
-        //reset the list of delays
-        delayList = mutableListOf()
-        //reset previous time when recording again
-        previousTime = 0
     }
 
     /**
