@@ -38,11 +38,15 @@ class DrumFragment : Fragment() {
 
     //mediaPlayer variables
     var mediaPlayer: MediaPlayer? = null
-    var drumRecordingList: MutableList<Int> = mutableListOf()
-    //var timer : Timer = Timer()
+    var drumRecordingList = mutableListOf<Int>()
     var soundMap = hashMapOf(1 to R.raw.newjr_16, 2 to R.raw.newjr_13, 3 to R.raw.emt_rimshot,
                              4 to R.raw.newjr_19, 5 to R.raw.newjr_16, 6 to R.raw.mc_snare_4b,
                              7 to R.raw.newjr_16, 8 to R.raw.newjr_16)
+
+    //button delay variables
+    var previousTime : Long = 0
+    var currentTime : Long = 0
+    var delayList = mutableListOf<Long>()
 
     //UI state variables
     var buttonMap : Map<String, Button> = hashMapOf()
@@ -50,22 +54,18 @@ class DrumFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
         mediaPlayer = MediaPlayer.create(context, R.raw.newjr_16)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View?
+    {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_drum, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        print("****inonviewcreated****")
 
         //code for recorder fragment buttons
         this.buttonMap = hashMapOf(ClickUtils.getPlay() to playButton,
@@ -73,9 +73,9 @@ class DrumFragment : Fragment() {
          ClickUtils.getStop() to stopButton)
 
         recordButton.setOnClickListener {
+            //reset the variables that keep track of the state of the currently recorded beat
+            resetRecordedBeat()
             ClickUtils.clickRecord(buttonMap)
-            //reset list of recorded sounds
-            drumRecordingList = mutableListOf()
         }
 
         stopButton.setOnClickListener {
@@ -84,6 +84,10 @@ class DrumFragment : Fragment() {
 
         playButton.setOnClickListener {
             ClickUtils.clickPlay(buttonMap)
+
+            //add a 0 to the front of delayList because there shouldnt be a delay on the first
+            // button press
+            delayList.add(0, 0L)
 
             //check if pressing the button set the state to playing, or not playing
             if(ClickUtils.isPlaying()){
@@ -128,7 +132,7 @@ class DrumFragment : Fragment() {
 
     //play the next sound in the list of recorded sounds
     fun playNext(index: Int) {
-        var timer = Timer()
+        val timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
                 mediaPlayer?.release()
@@ -143,7 +147,7 @@ class DrumFragment : Fragment() {
                     Looper.loop()
                 }
             }
-        }, 500)
+        }, delayList[index])
     }
 
     //play drum sound and add to list of recorded sounds if we are recording
@@ -158,8 +162,37 @@ class DrumFragment : Fragment() {
             //keep track of what was pressed if we are recording
             if(ClickUtils.isRecording()) {
                 drumRecordingList.add(soundNumber)
+
+                //keep track of delay
+                //if this is the first time we are pressing a button when recording,
+                // don't add a delay
+                if(previousTime == 0L) {
+                    previousTime = System.currentTimeMillis()
+                }
+                else {
+                    currentTime = System.currentTimeMillis()
+
+                    //subtract 100 from the delay because the method calls are not fast enough
+                    // for the delays to sound totally correct
+                    var delay = currentTime - previousTime - 100
+                    if(delay < 0) {
+                        delay = 0
+                    }
+                    delayList.add(delay)
+
+                    previousTime = currentTime
+                }
             }
         }.start()
+    }
+
+    fun resetRecordedBeat() {
+        //reset list of recorded sounds
+        drumRecordingList = mutableListOf()
+        //reset the list of delays
+        delayList = mutableListOf()
+        //reset previous time when recording again
+        previousTime = 0
     }
 
     /**
