@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,6 +71,9 @@ class DrumFragment : Fragment() {
          ClickUtils.getStop() to stopButton)
 
         recordButton.setOnClickListener {
+            pop_save.visibility = View.VISIBLE
+            ViewCompat.setTranslationZ(pop_save, -10.0f)
+            //pop_save.bringToFront()
             //reset the variables that keep track of the state of the currently recorded beat
             recordedBeat.reset()
             ClickUtils.clickRecord(buttonMap)
