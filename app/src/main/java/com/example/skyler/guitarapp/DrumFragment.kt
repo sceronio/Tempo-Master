@@ -12,8 +12,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.navigation.fragment.NavHostFragment
 import kotlinx.android.synthetic.main.fragment_drum.*
 import kotlinx.android.synthetic.main.fragment_recorder.*
+import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
 import java.util.*
 
 
@@ -113,6 +115,13 @@ class DrumFragment : Fragment() {
         cHatButton.setOnClickListener {
             onDrumButtonPressed(8)
         }
+
+        //navbar code
+        drumButton.setOnClickListener{
+            /*val directions = ContentMainFragmentDirections.action_contentMainFragment_to_metronomeFragment()
+            NavHostFragment.findNavController(this).navigate(directions)*/
+        }
+
     }
 
     //play the next sound in the list of recorded sounds
@@ -150,6 +159,7 @@ class DrumFragment : Fragment() {
             }
         }.start()
     }
+
 
     /**
      * This interface must be implemented by activities that contain this
