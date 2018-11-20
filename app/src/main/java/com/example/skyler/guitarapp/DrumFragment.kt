@@ -38,7 +38,6 @@ class DrumFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
     //mediaPlayer variables
-    var mediaPlayer: MediaPlayer? = null
     var soundMap = hashMapOf(1 to R.raw.newjr_16, 2 to R.raw.newjr_13, 3 to R.raw.emt_rimshot,
                              4 to R.raw.newjr_19, 5 to R.raw.newjr_16, 6 to R.raw.mc_snare_4b,
                              7 to R.raw.newjr_16, 8 to R.raw.newjr_16)
@@ -52,7 +51,6 @@ class DrumFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mediaPlayer = MediaPlayer.create(context, R.raw.newjr_16)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -125,9 +123,9 @@ class DrumFragment : Fragment() {
         val timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
-                mediaPlayer?.release()
-                mediaPlayer = MediaPlayer.create(context, soundMap[recordedBeat.getSound(index)] ?: 0)
+                var mediaPlayer = MediaPlayer.create(context, soundMap[recordedBeat.getSound(index)] ?: 0)
                 mediaPlayer?.start()
+                mediaPlayer.setOnCompletionListener { mediaPlayer.release() }
                 if (recordedBeat.getSize() > index + 1) {
                     playNext(index + 1)
                 }
@@ -145,9 +143,9 @@ class DrumFragment : Fragment() {
 
         //make mediaPlayer in a different thread
         Thread {
-            mediaPlayer?.release()
-            mediaPlayer = MediaPlayer.create(context, soundMap.get(soundNumber) ?: 0)
+            var mediaPlayer = MediaPlayer.create(context, soundMap.get(soundNumber) ?: 0)
             mediaPlayer?.start()
+            mediaPlayer.setOnCompletionListener { mediaPlayer.release() }
 
             //keep track of what was pressed if we are recording
             if(ClickUtils.isRecording()) {
