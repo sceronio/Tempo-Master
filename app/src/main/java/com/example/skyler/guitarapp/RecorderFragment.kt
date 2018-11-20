@@ -51,7 +51,7 @@ class RecorderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var buttonMap : Map<String, Button> = hashMapOf(ClickUtils.getPlay() to playButton,
+        /*var buttonMap : Map<String, Button> = hashMapOf(ClickUtils.getPlay() to playButton,
                                                         ClickUtils.getRecord() to recordButton,
                                                         ClickUtils.getStop() to stopButton)
         recordButton.setOnClickListener {
@@ -64,7 +64,7 @@ class RecorderFragment : Fragment() {
 
         playButton.setOnClickListener {
             ClickUtils.clickPlay(buttonMap)
-        }
+        }*/
     }
 
     private fun (() -> Any).withDelay(delay: Long) {
