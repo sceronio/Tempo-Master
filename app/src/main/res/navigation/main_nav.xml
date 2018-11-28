@@ -13,6 +13,18 @@
         <action
             android:id="@+id/action_drumFragment_to_contentMainFragment"
             app:popUpTo="@id/contentMainFragment" />
+        <action
+            android:id="@+id/action_drumFragment_to_drumPlayBackFragment"
+            app:destination="@id/drumPlayBackFragment" />
+        <action
+            android:id="@+id/action_drumFragment_to_metronomeFragment"
+            app:destination="@id/metronomeFragment" />
+        <action
+            android:id="@+id/action_drumFragment_to_guitarRecordingFragment"
+            app:destination="@id/guitarRecordingFragment" />
+        <action
+            android:id="@+id/action_drumFragment_to_beatEditingFragment"
+            app:destination="@id/beatEditingFragment" />
     </fragment>
 
     <fragment
@@ -33,19 +45,6 @@
         <action
             android:id="@+id/action_contentMainFragment_to_drumFragment"
             app:destination="@id/drumFragment" />
-        <action
-            android:id="@+id/action_contentMainFragment_to_metronomeFragment"
-            app:destination="@id/metronomeFragment"
-            app:popUpTo="@+id/contentMainFragment" />
-        <action
-            android:id="@+id/action_contentMainFragment_self"
-            app:popUpTo="@id/contentMainFragment" />
-        <action
-            android:id="@+id/action_contentMainFragment_to_drumPlayBackFragment"
-            app:destination="@id/drumPlayBackFragment" />
-        <action
-            android:id="@+id/action_contentMainFragment_to_recorderFragment"
-            app:destination="@id/recorderFragment" />
     </fragment>
     <fragment
         android:id="@+id/drumPlayBackFragment"
@@ -60,6 +59,14 @@
         android:id="@+id/recorderFragment"
         android:name="com.example.skyler.guitarapp.RecorderFragment"
         android:label="RecorderFragment" />
+    <fragment
+        android:id="@+id/guitarRecordingFragment"
+        android:name="com.example.skyler.guitarapp.GuitarRecordingFragment"
+        android:label="GuitarRecordingFragment" />
+    <fragment
+        android:id="@+id/beatEditingFragment"
+        android:name="com.example.skyler.guitarapp.BeatEditingFragment"
+        android:label="BeatEditingFragment" />
 
 
 </navigation>

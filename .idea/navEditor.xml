@@ -8,6 +8,18 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="beatEditingFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="2018" />
+                            <option name="y" value="826" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="contentMainFragment">
                     <value>
                       <LayoutPositions>
@@ -19,27 +31,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_contentMainFragment_self">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
                             <entry key="action_contentMainFragment_to_drumFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_contentMainFragment_to_drumPlayBackFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_contentMainFragment_to_metronomeFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_contentMainFragment_to_recorderFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -54,13 +46,33 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1349" />
-                            <option name="y" value="-113" />
+                            <option name="x" value="1270" />
+                            <option name="y" value="-141" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_drumFragment_to_beatEditingFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_drumFragment_to_contentMainFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_drumFragment_to_drumPlayBackFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_drumFragment_to_guitarRecordingFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_drumFragment_to_metronomeFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -87,6 +99,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="guitarRecordingFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="2075" />
+                            <option name="y" value="-124" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

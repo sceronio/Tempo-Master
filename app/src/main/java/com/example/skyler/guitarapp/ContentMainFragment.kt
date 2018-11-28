@@ -48,17 +48,17 @@ class ContentMainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toMetronome.setOnClickListener {
+        /*toMetronome.setOnClickListener {
             val directions = ContentMainFragmentDirections.action_contentMainFragment_to_metronomeFragment()
             NavHostFragment.findNavController(this).navigate(directions)
-        }
+        }*/
 
         toDrumMachine.setOnClickListener {
             val directions = ContentMainFragmentDirections.action_contentMainFragment_to_drumFragment()
             NavHostFragment.findNavController(this).navigate(directions)
         }
 
-        toDrumPlayback.setOnClickListener {
+        /*toDrumPlayback.setOnClickListener {
             val directions = ContentMainFragmentDirections.action_contentMainFragment_to_drumPlayBackFragment()
             //val directions = ContentMainFragmentDirections.action_contentMainFragment_to_drumP
             NavHostFragment.findNavController(this).navigate(directions)
@@ -68,7 +68,7 @@ class ContentMainFragment : Fragment() {
             val directions = ContentMainFragmentDirections.action_contentMainFragment_to_recorderFragment()
             //val directions = ContentMainFragmentDirections.action_contentMainFragment_to_drumP
             NavHostFragment.findNavController(this).navigate(directions)
-        }
+        }*/
     }
 
     // TODO: Rename method, update argument and hook method into UI event

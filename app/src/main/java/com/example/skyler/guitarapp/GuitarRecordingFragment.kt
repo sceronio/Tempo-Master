@@ -27,7 +27,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class DrumPlayBackFragment : Fragment() {
+class GuitarRecordingFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -44,7 +44,7 @@ class DrumPlayBackFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_drum_play_back, container, false)
+        return inflater.inflate(R.layout.fragment_guitar_recording, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -54,6 +54,20 @@ class DrumPlayBackFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var buttonMap : Map<String, Button> = hashMapOf(ClickUtils.getPlay() to playButton,
+                ClickUtils.getRecord() to recordButton,
+                ClickUtils.getStop() to stopButton)
+        recordButton.setOnClickListener {
+            ClickUtils.clickRecord(buttonMap)
+        }
+
+        stopButton.setOnClickListener {
+            ClickUtils.clickStop(buttonMap)
+        }
+
+        playButton.setOnClickListener {
+            ClickUtils.clickPlay(buttonMap)
+        }
     }
 
     override fun onAttach(context: Context) {

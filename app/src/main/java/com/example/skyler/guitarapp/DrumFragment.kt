@@ -40,7 +40,7 @@ class DrumFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
     //mediaPlayer variables
-    var soundMap = hashMapOf(1 to R.raw.newjr_16, 2 to R.raw.newjr_13, 3 to R.raw.emt_rimshot,
+    var soundMap = hashMapOf(1 to R.raw.newjr_16, 2 to R.raw.newjr_13, 3 to R.raw.rimshot,
                              4 to R.raw.newjr_19, 5 to R.raw.newjr_16, 6 to R.raw.mc_snare_4b,
                              7 to R.raw.newjr_16, 8 to R.raw.newjr_16)
 
@@ -117,9 +117,24 @@ class DrumFragment : Fragment() {
         }
 
         //navbar code
-        drumButton.setOnClickListener{
-            /*val directions = ContentMainFragmentDirections.action_contentMainFragment_to_metronomeFragment()
-            NavHostFragment.findNavController(this).navigate(directions)*/
+        playbackButton.setOnClickListener{
+            val directions = DrumFragmentDirections.action_drumFragment_to_drumPlayBackFragment()
+            NavHostFragment.findNavController(this).navigate(directions)
+        }
+
+        metronomeButton.setOnClickListener{
+            val directions = DrumFragmentDirections.action_drumFragment_to_metronomeFragment()
+            NavHostFragment.findNavController(this).navigate(directions)
+        }
+
+        musicButton.setOnClickListener {
+            val directions = DrumFragmentDirections.action_drumFragment_to_beatEditingFragment()
+            NavHostFragment.findNavController(this).navigate(directions)
+        }
+
+        guitarButton.setOnClickListener {
+            val directions = DrumFragmentDirections.action_drumFragment_to_guitarRecordingFragment()
+            NavHostFragment.findNavController(this).navigate(directions)
         }
 
     }
