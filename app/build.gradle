@@ -6,7 +6,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.skyler.guitarapp"
-        minSdkVersion '21'
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -33,6 +33,9 @@ dependencies {
     implementation "android.arch.navigation:navigation-fragment:$nav_version"
     implementation "android.arch.navigation:navigation-ui:$nav_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation 'com.google.code.gson:gson:2.7'
+
     apply plugin: 'androidx.navigation.safeargs'
 
 }

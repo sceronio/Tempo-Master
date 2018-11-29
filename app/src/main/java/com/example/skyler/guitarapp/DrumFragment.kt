@@ -17,6 +17,9 @@ import kotlinx.android.synthetic.main.fragment_drum.*
 import kotlinx.android.synthetic.main.fragment_recorder.*
 import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
 import java.util.*
+import android.content.Context.MODE_PRIVATE
+import android.preference.PreferenceManager
+import com.google.gson.Gson
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -90,6 +93,10 @@ class DrumFragment : Fragment() {
             }
         }
 
+        saveButton.setOnClickListener {
+            saveRecording()
+        }
+
         //code for each of the drum buttons
         crashButton.setOnClickListener {
             onDrumButtonPressed(1)
@@ -136,7 +143,15 @@ class DrumFragment : Fragment() {
             val directions = DrumFragmentDirections.action_drumFragment_to_guitarRecordingFragment()
             NavHostFragment.findNavController(this).navigate(directions)
         }
+    }
 
+    private fun saveRecording() {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val prefsEditor = prefs.edit()
+        val gson = Gson()
+        val serializedObject = gson.toJson(recordedBeat)
+        prefsEditor.putString("recording", serializedObject)
+        prefsEditor.apply()
     }
 
     //play the next sound in the list of recorded sounds
@@ -160,7 +175,7 @@ class DrumFragment : Fragment() {
     }
 
     //play drum sound and add to list of recorded sounds if we are recording
-    fun onDrumButtonPressed(soundNumber: Int) {
+    private fun onDrumButtonPressed(soundNumber: Int) {
 
         //make mediaPlayer in a different thread
         Thread {
