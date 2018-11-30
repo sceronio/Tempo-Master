@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.v4.app.Fragment
-import android.support.v4.view.ViewCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import kotlinx.android.synthetic.main.fragment_drum.*
 import kotlinx.android.synthetic.main.fragment_recorder.*
 import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
 import java.util.*
-import android.content.Context.MODE_PRIVATE
 import android.preference.PreferenceManager
 import com.google.gson.Gson
 
@@ -146,20 +144,44 @@ class DrumFragment : Fragment() {
     }
 
     private fun saveRecording() {
+        //get shared preferences editor
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val prefsEditor = prefs.edit()
+
+        //see how many recordings we have, this is used in naming recorded objects
+        var numRecordings = prefs.getInt("numRecordings", 0)
+
+        //convert recordedBeat to json
         val gson = Gson()
         val serializedObject = gson.toJson(recordedBeat)
-        prefsEditor.putString("recording", serializedObject)
+
+        //store json in sharedPreferences
+        prefsEditor.putString("recording" + numRecordings, serializedObject)
+
+        numRecordings++
+        prefsEditor.putInt("numRecordings", numRecordings)
+
         prefsEditor.apply()
+
+        testSharedPreferences()
     }
+
+    //method to see if I am using shared preferences correctly
+    private fun testSharedPreferences() {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val prefsEditor = prefs.edit()
+
+        var test : MutableMap<String, *> = prefs.all
+        var nothing = 0
+    }
+
 
     //play the next sound in the list of recorded sounds
     fun playNext(index: Int) {
         val timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
-                var mediaPlayer = MediaPlayer.create(context, soundMap[recordedBeat.getSound(index)] ?: 0)
+                val mediaPlayer = MediaPlayer.create(context, soundMap[recordedBeat.getSound(index)] ?: 0)
                 mediaPlayer?.start()
                 mediaPlayer.setOnCompletionListener { mediaPlayer.release() }
                 if (recordedBeat.getSize() > index + 1) {
@@ -179,7 +201,7 @@ class DrumFragment : Fragment() {
 
         //make mediaPlayer in a different thread
         Thread {
-            var mediaPlayer = MediaPlayer.create(context, soundMap.get(soundNumber) ?: 0)
+            val mediaPlayer = MediaPlayer.create(context, soundMap.get(soundNumber) ?: 0)
             mediaPlayer?.start()
             mediaPlayer.setOnCompletionListener { mediaPlayer.release() }
 
