@@ -64,27 +64,21 @@ class DrumPlayBackFragment : Fragment() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         var prefMap : MutableMap<String, *> = prefs.all
 
-        //get keys in shared preferences for making buttons
+        //get keys in shared preferences for populating list with recordings
         val keys = prefMap.keys.toTypedArray()
 
-        val adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, keys)
+        val playbackItemList : ArrayList<PlaybackItem> = arrayListOf()
+
+        for(file in keys) {
+            playbackItemList.add(PlaybackItem(file))
+        }
+
+        //val adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, keys)
+        val adapter = PlaybackItemsAdapter(context, playbackItemList)
 
         //set adapter
         playback_list_view.adapter = adapter
-
-
-
-        /*prefMap.keys.forEach {
-            key -> addButton(key)
-        }*/
     }
-
-    /*private fun addButton(key : String) {
-
-        var button = Button(context)
-        button.setText(key)
-        fragment_drum_playback.addView(button)
-    }*/
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

@@ -71,6 +71,9 @@ class DrumFragment : Fragment() {
          ClickUtils.getRecord() to recordButton,
          ClickUtils.getStop() to stopButton)
 
+        //initialize the player
+        val player = Player(context, soundMap, buttonMap)
+
         recordButton.setOnClickListener {
             //reset the variables that keep track of the state of the currently recorded beat
             recordedBeat.reset()
@@ -87,7 +90,7 @@ class DrumFragment : Fragment() {
             //check if pressing the button set the state to playing, or not playing
             if(ClickUtils.isPlaying()){
                 //play the stuff I have recorded
-                playNext(0)
+                player.playNext(0, recordedBeat)
             }
         }
 
@@ -173,27 +176,6 @@ class DrumFragment : Fragment() {
 
         var test : MutableMap<String, *> = prefs.all
         var nothing = 0
-    }
-
-
-    //play the next sound in the list of recorded sounds
-    fun playNext(index: Int) {
-        val timer = Timer()
-        timer.schedule(object : TimerTask() {
-            override fun run() {
-                val mediaPlayer = MediaPlayer.create(context, soundMap[recordedBeat.getSound(index)] ?: 0)
-                mediaPlayer?.start()
-                mediaPlayer.setOnCompletionListener { mediaPlayer.release() }
-                if (recordedBeat.getSize() > index + 1) {
-                    playNext(index + 1)
-                }
-                else {
-                    Looper.prepare()
-                    Handler().post({ClickUtils.clickPlay(buttonMap)})
-                    Looper.loop()
-                }
-            }
-        }, recordedBeat.getDelay(index))
     }
 
     //play drum sound and add to list of recorded sounds if we are recording
