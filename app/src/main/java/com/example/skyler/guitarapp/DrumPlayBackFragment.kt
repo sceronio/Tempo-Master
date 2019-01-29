@@ -8,14 +8,9 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ListView
-import android.widget.TextView
-import kotlinx.android.synthetic.main.fragment_drum.*
+import android.widget.AdapterView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_drum_play_back.*
-import kotlinx.android.synthetic.main.fragment_recorder.*
-import kotlinx.android.synthetic.main.fragment_recorder.view.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -67,18 +62,27 @@ class DrumPlayBackFragment : Fragment() {
         //get keys in shared preferences for populating list with recordings
         val keys = prefMap.keys.toTypedArray()
 
-        val playbackItemList : ArrayList<PlaybackItem> = arrayListOf()
+        val playbackItemModelList : ArrayList<PlaybackItemModel> = arrayListOf()
 
+        //create list of playbackitemmodels
         for(file in keys) {
-            playbackItemList.add(PlaybackItem(file))
+            var temp = prefMap.get(file)
+            if(temp is String) {
+                playbackItemModelList.add(PlaybackItemModel(file, temp))
+            }
         }
 
-        //val adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, keys)
-        val adapter = PlaybackItemsAdapter(context, playbackItemList)
+        val adapter = PlaybackItemsAdapter(context, playbackItemModelList)
 
         //set adapter
         playback_list_view.adapter = adapter
+
+        playback_list_view.setOnItemClickListener { adapter, view, position, id ->
+            val selectedItem = playback_list_view.getItemAtPosition(position)
+            Toast.makeText(context, "$selectedItem", Toast.LENGTH_LONG).show()
+        }
     }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

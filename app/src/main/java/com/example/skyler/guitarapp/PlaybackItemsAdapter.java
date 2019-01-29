@@ -9,15 +9,16 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class PlaybackItemsAdapter extends ArrayAdapter<PlaybackItem> {
-    public PlaybackItemsAdapter(Context context, ArrayList<PlaybackItem> item) {
+public class PlaybackItemsAdapter extends ArrayAdapter<PlaybackItemModel> {
+
+    public PlaybackItemsAdapter(Context context, ArrayList<PlaybackItemModel> item) {
         super(context, 0, item);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        PlaybackItem PlaybackItem = getItem(position);
+        PlaybackItemModel playbackItemModel = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
@@ -27,7 +28,7 @@ public class PlaybackItemsAdapter extends ArrayAdapter<PlaybackItem> {
         // Lookup view for data population
         TextView filename = (TextView) convertView.findViewById(R.id.filename);
         // Populate the data into the template view using the data object
-        filename.setText(PlaybackItem.getFileName());
+        filename.setText(playbackItemModel.getFileName());
 
         // Return the completed view to render on screen
         return convertView;

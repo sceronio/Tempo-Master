@@ -165,17 +165,6 @@ class DrumFragment : Fragment() {
         prefsEditor.putInt("numRecordings", numRecordings)
 
         prefsEditor.apply()
-
-        testSharedPreferences()
-    }
-
-    //method to see if I am using shared preferences correctly
-    private fun testSharedPreferences() {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val prefsEditor = prefs.edit()
-
-        var test : MutableMap<String, *> = prefs.all
-        var nothing = 0
     }
 
     //play drum sound and add to list of recorded sounds if we are recording
