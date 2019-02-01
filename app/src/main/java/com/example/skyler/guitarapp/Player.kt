@@ -7,7 +7,11 @@ import android.os.Looper
 import android.widget.Button
 import java.util.*
 
-class Player constructor(val context: Context?, val soundMap: HashMap<Int, Int>, val buttonMap: Map<String, Button>) {
+class Player constructor(val context: Context?) {
+
+    var soundMap = hashMapOf(1 to R.raw.newjr_16, 2 to R.raw.newjr_13, 3 to R.raw.rimshot,
+            4 to R.raw.newjr_19, 5 to R.raw.newjr_16, 6 to R.raw.mc_snare_4b,
+            7 to R.raw.newjr_16, 8 to R.raw.newjr_16)
 
     //play the next sound in the list of recorded sounds
     fun playNext(index: Int, recordedBeat: RecordedBeat)
@@ -23,7 +27,7 @@ class Player constructor(val context: Context?, val soundMap: HashMap<Int, Int>,
                 }
                 else {
                     Looper.prepare()
-                    Handler().post({ClickUtils.clickPlay(buttonMap)})
+                    //Handler().post({ClickUtils.clickPlay(buttonMap)})
                     Looper.loop()
                 }
             }

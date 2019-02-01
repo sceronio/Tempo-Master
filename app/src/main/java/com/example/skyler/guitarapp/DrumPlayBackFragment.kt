@@ -1,6 +1,7 @@
 package com.example.skyler.guitarapp
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -15,6 +16,8 @@ import kotlinx.android.synthetic.main.fragment_drum_play_back.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+//TODO: store playback item model objects in shared preferences. NOT serialized recording objects
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -32,6 +35,7 @@ class DrumPlayBackFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    var adapter: PlaybackItemsAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,25 +68,35 @@ class DrumPlayBackFragment : Fragment() {
 
         val playbackItemModelList : ArrayList<PlaybackItemModel> = arrayListOf()
 
+        var i = 0
+
         //create list of playbackitemmodels
         for(file in keys) {
-            var temp = prefMap.get(file)
+            val temp = prefMap[file]
             if(temp is String) {
-                playbackItemModelList.add(PlaybackItemModel(file, temp))
+                playbackItemModelList.add(PlaybackItemModel(file, temp, i))
             }
+            i++
         }
 
-        val adapter = PlaybackItemsAdapter(context, playbackItemModelList)
-
-        //set adapter
+        //create the adapter for playbackItemModelList
+        adapter = PlaybackItemsAdapter(context, playbackItemModelList)
+        //set adapter on the view
         playback_list_view.adapter = adapter
 
-        playback_list_view.setOnItemClickListener { adapter, view, position, id ->
-            val selectedItem = playback_list_view.getItemAtPosition(position)
-            Toast.makeText(context, "$selectedItem", Toast.LENGTH_LONG).show()
-        }
-    }
 
+        var pref_listener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+            var testName = prefMap[key] as PlaybackItemModel
+            Toast.makeText(context, "filename: " + testName.fileName, Toast.LENGTH_LONG).show()
+            //remove that item that was removed from shared preferences from the adapter
+            playbackItemModelList.removeAt(0)
+            //update the adapter
+            adapter?.notifyDataSetChanged()
+        }
+
+        prefs.registerOnSharedPreferenceChangeListener(pref_listener)
+
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -97,6 +111,14 @@ class DrumPlayBackFragment : Fragment() {
         super.onDetach()
         listener = null
     }
+
+    /*fun onSharedPreferenceChanged(sharedPreferences : SharedPreferences, key: String) {
+        getActivity()?.runOnUiThread{ object: Runnable {
+            override fun run() {
+                adapter?.notifyDataSetChanged()
+            }
+        }
+    } }*/
 
     /**
      * This interface must be implemented by activities that contain this
