@@ -11,13 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_drum_play_back.*
 
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
-//TODO: store playback item model objects in shared preferences. NOT serialized recording objects
+//TODO: bug where the item after an item that was just removed cannot be removed 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -62,21 +63,21 @@ class DrumPlayBackFragment : Fragment() {
         //get shared preferences editor
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         var prefMap : MutableMap<String, *> = prefs.all
+        val gson = Gson()
+
 
         //get keys in shared preferences for populating list with recordings
         val keys = prefMap.keys.toTypedArray()
 
         val playbackItemModelList : ArrayList<PlaybackItemModel> = arrayListOf()
 
-        var i = 0
-
         //create list of playbackitemmodels
-        for(file in keys) {
-            val temp = prefMap[file]
-            if(temp is String) {
-                playbackItemModelList.add(PlaybackItemModel(file, temp, i))
+        for(filename in keys) {
+            var currentPlaybackObject = prefMap[filename]
+            if(currentPlaybackObject is String) {
+                currentPlaybackObject = gson.fromJson(currentPlaybackObject, PlaybackItemModel::class.java)
+                playbackItemModelList.add(currentPlaybackObject)
             }
-            i++
         }
 
         //create the adapter for playbackItemModelList
@@ -84,18 +85,12 @@ class DrumPlayBackFragment : Fragment() {
         //set adapter on the view
         playback_list_view.adapter = adapter
 
-
         var pref_listener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
-            var testName = prefMap[key] as PlaybackItemModel
-            Toast.makeText(context, "filename: " + testName.fileName, Toast.LENGTH_LONG).show()
-            //remove that item that was removed from shared preferences from the adapter
-            playbackItemModelList.removeAt(0)
-            //update the adapter
-            adapter?.notifyDataSetChanged()
+           //notify adapter that it must refresh when shared preferences changes
+            //adapter?.notifyDataSetChanged()
         }
 
         prefs.registerOnSharedPreferenceChangeListener(pref_listener)
-
     }
 
     override fun onAttach(context: Context) {

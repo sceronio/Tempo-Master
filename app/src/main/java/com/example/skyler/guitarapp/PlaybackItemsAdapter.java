@@ -46,12 +46,14 @@ public class PlaybackItemsAdapter extends ArrayAdapter<PlaybackItemModel> {
             viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //remove item from shared preferences
                     SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
                     SharedPreferences.Editor editor = settings.edit();
                     editor.remove(playbackItemModel.getFileName());
                     editor.apply();
-                    /*Toast.makeText(getContext(), playbackItemModel.getFileName() + " deleted.",
-                     Toast.LENGTH_LONG).show();*/
+                    //remove item from adapter
+                    PlaybackItemsAdapter.super.remove(playbackItemModel);
+                    PlaybackItemsAdapter.super.notifyDataSetChanged();
                 }
             });
 

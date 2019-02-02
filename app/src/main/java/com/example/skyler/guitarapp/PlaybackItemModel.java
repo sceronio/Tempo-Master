@@ -6,16 +6,14 @@ public class PlaybackItemModel {
     private String fileName;
     private String serializedRecording;
     private RecordedBeat recording;
-    private int listIndex;
 
 
-    public PlaybackItemModel(String filename, String serializedRecording, int listIndex) {
+    public PlaybackItemModel(String filename, String serializedRecording) {
         Gson gson = new Gson();
 
         this.fileName = filename;
         this.serializedRecording = serializedRecording;
         this.recording = gson.fromJson(serializedRecording, RecordedBeat.class);
-        this.listIndex = listIndex;
     }
 
     public String getFileName() {
