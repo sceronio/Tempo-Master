@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.navigation.fragment.NavHostFragment
+import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
 import kotlinx.android.synthetic.main.fragment_drum.*
 import kotlinx.android.synthetic.main.fragment_recorder.*
 import kotlinx.android.synthetic.main.fragment_recorder.view.*
@@ -54,6 +56,27 @@ class BeatEditingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //navbar code
+        drumButton.setOnClickListener {
+            val directions = BeatEditingFragmentDirections.action_beatEditingFragment_to_drumFragment()
+            NavHostFragment.findNavController(this).navigate(directions)
+        }
+
+        metronomeButton.setOnClickListener{
+            val directions = BeatEditingFragmentDirections.action_beatEditingFragment_to_metronomeFragment()
+            NavHostFragment.findNavController(this).navigate(directions)
+        }
+
+        playbackButton.setOnClickListener {
+            val directions = BeatEditingFragmentDirections.action_beatEditingFragment_to_drumPlayBackFragment()
+            NavHostFragment.findNavController(this).navigate(directions)
+        }
+
+        guitarButton.setOnClickListener {
+            val directions = BeatEditingFragmentDirections.action_beatEditingFragment_to_guitarRecordingFragment()
+            NavHostFragment.findNavController(this).navigate(directions)
+        }
     }
 
     override fun onAttach(context: Context) {

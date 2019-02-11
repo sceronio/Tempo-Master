@@ -11,9 +11,6 @@
         android:label="fragment_drum"
         tools:layout="@layout/fragment_drum" >
         <action
-            android:id="@+id/action_drumFragment_to_contentMainFragment"
-            app:popUpTo="@id/contentMainFragment" />
-        <action
             android:id="@+id/action_drumFragment_to_drumPlayBackFragment"
             app:destination="@id/drumPlayBackFragment" />
         <action
@@ -33,8 +30,17 @@
         android:label="fragment_metronome"
         tools:layout="@layout/fragment_metronome" >
         <action
-            android:id="@+id/action_metronomeFragment_to_contentMainFragment"
-            app:popUpTo="@id/contentMainFragment" />
+            android:id="@+id/action_metronomeFragment_to_beatEditingFragment"
+            app:destination="@id/beatEditingFragment" />
+        <action
+            android:id="@+id/action_metronomeFragment_to_drumFragment"
+            app:destination="@id/drumFragment" />
+        <action
+            android:id="@+id/action_metronomeFragment_to_drumPlayBackFragment"
+            app:destination="@id/drumPlayBackFragment" />
+        <action
+            android:id="@+id/action_metronomeFragment_to_guitarRecordingFragment"
+            app:destination="@id/guitarRecordingFragment" />
     </fragment>
 
     <fragment
@@ -52,8 +58,17 @@
         android:label="fragment_drum_play_back"
         tools:layout="@layout/fragment_drum_play_back" >
         <action
-            android:id="@+id/action_drumPlayBackFragment_to_contentMainFragment"
-            app:popUpTo="@id/contentMainFragment" />
+            android:id="@+id/action_drumPlayBackFragment_to_drumFragment"
+            app:destination="@id/drumFragment" />
+        <action
+            android:id="@+id/action_drumPlayBackFragment_to_beatEditingFragment"
+            app:destination="@id/beatEditingFragment" />
+        <action
+            android:id="@+id/action_drumPlayBackFragment_to_metronomeFragment"
+            app:destination="@id/metronomeFragment" />
+        <action
+            android:id="@+id/action_drumPlayBackFragment_to_guitarRecordingFragment"
+            app:destination="@id/guitarRecordingFragment" />
     </fragment>
     <fragment
         android:id="@+id/recorderFragment"
@@ -62,11 +77,40 @@
     <fragment
         android:id="@+id/guitarRecordingFragment"
         android:name="com.example.skyler.guitarapp.GuitarRecordingFragment"
-        android:label="GuitarRecordingFragment" />
+        android:label="GuitarRecordingFragment" >
+        <action
+            android:id="@+id/action_guitarRecordingFragment_to_beatEditingFragment"
+            app:destination="@id/beatEditingFragment" />
+        <action
+            android:id="@+id/action_guitarRecordingFragment_to_drumFragment"
+            app:destination="@id/drumFragment" />
+        <action
+            android:id="@+id/action_guitarRecordingFragment_to_drumPlayBackFragment"
+            app:destination="@id/drumPlayBackFragment" />
+        <action
+            android:id="@+id/action_guitarRecordingFragment_to_metronomeFragment"
+            app:destination="@id/metronomeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/beatEditingFragment"
         android:name="com.example.skyler.guitarapp.BeatEditingFragment"
-        android:label="BeatEditingFragment" />
+        android:label="BeatEditingFragment" >
+        <action
+            android:id="@+id/action_beatEditingFragment_to_drumFragment"
+            app:destination="@id/drumFragment" />
+        <action
+            android:id="@+id/action_beatEditingFragment_to_drumPlayBackFragment"
+            app:destination="@id/drumPlayBackFragment" />
+        <action
+            android:id="@+id/action_beatEditingFragment_to_guitarRecordingFragment"
+            app:destination="@id/guitarRecordingFragment" />
+        <action
+            android:id="@+id/action_beatEditingFragment_to_metronomeFragment"
+            app:destination="@id/metronomeFragment" />
+        <action
+            android:id="@+id/action_beatEditingFragment_to_recorderFragment"
+            app:destination="@id/recorderFragment" />
+    </fragment>
 
 
 </navigation>

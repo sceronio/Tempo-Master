@@ -11,7 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.navigation.fragment.NavHostFragment
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
 import kotlinx.android.synthetic.main.fragment_drum_play_back.*
 
 
@@ -91,6 +93,27 @@ class DrumPlayBackFragment : Fragment() {
         }
 
         prefs.registerOnSharedPreferenceChangeListener(pref_listener)
+
+        //navbar code
+        drumButton.setOnClickListener {
+            val directions = DrumPlayBackFragmentDirections.action_drumPlayBackFragment_to_drumFragment()
+            NavHostFragment.findNavController(this).navigate(directions)
+        }
+
+        metronomeButton.setOnClickListener{
+            val directions = DrumPlayBackFragmentDirections.action_drumPlayBackFragment_to_metronomeFragment()
+            NavHostFragment.findNavController(this).navigate(directions)
+        }
+
+        musicButton.setOnClickListener {
+            val directions = DrumPlayBackFragmentDirections.action_drumPlayBackFragment_to_beatEditingFragment()
+            NavHostFragment.findNavController(this).navigate(directions)
+        }
+
+        guitarButton.setOnClickListener {
+            val directions = DrumPlayBackFragmentDirections.action_drumPlayBackFragment_to_guitarRecordingFragment()
+            NavHostFragment.findNavController(this).navigate(directions)
+        }
     }
 
     override fun onAttach(context: Context) {

@@ -3,16 +3,11 @@ package com.example.skyler.guitarapp
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.navigation.fragment.NavHostFragment
-import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
-import kotlinx.android.synthetic.main.fragment_drum.*
-import kotlinx.android.synthetic.main.fragment_recorder.*
-import kotlinx.android.synthetic.main.fragment_recorder.view.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -23,17 +18,18 @@ private const val ARG_PARAM2 = "param2"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [DrumPlayBackFragment.OnFragmentInteractionListener] interface
+ * [MetronomeFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [DrumPlayBackFragment.newInstance] factory method to
+ * Use the [MetronomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class GuitarRecordingFragment : Fragment() {
+class AudioRecorderFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,19 +42,14 @@ class GuitarRecordingFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_guitar_recording, container, false)
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+        return inflater.inflate(R.layout.fragment_recorder, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var buttonMap : Map<String, Button> = hashMapOf(ClickUtils.getPlay() to playButton,
-                ClickUtils.getRecord() to recordButton,
-                ClickUtils.getStop() to stopButton)
+        /*var buttonMap : Map<String, Button> = hashMapOf(ClickUtils.getPlay() to playButton,
+                                                        ClickUtils.getRecord() to recordButton,
+                                                        ClickUtils.getStop() to stopButton)
         recordButton.setOnClickListener {
             ClickUtils.clickRecord(buttonMap)
         }
@@ -69,29 +60,16 @@ class GuitarRecordingFragment : Fragment() {
 
         playButton.setOnClickListener {
             ClickUtils.clickPlay(buttonMap)
-        }
+        }*/
+    }
 
-        //navbar code
-        drumButton.setOnClickListener {
-            val directions = GuitarRecordingFragmentDirections.action_guitarRecordingFragment_to_drumFragment()
-            NavHostFragment.findNavController(this).navigate(directions)
-        }
+    private fun (() -> Any).withDelay(delay: Long) {
+        Handler().postDelayed({this} , delay)
+    }
 
-        metronomeButton.setOnClickListener{
-            val directions = GuitarRecordingFragmentDirections.action_guitarRecordingFragment_to_metronomeFragment()
-            NavHostFragment.findNavController(this).navigate(directions)
-        }
-
-        playbackButton.setOnClickListener {
-            val directions = GuitarRecordingFragmentDirections.action_guitarRecordingFragment_to_drumPlayBackFragment()
-            NavHostFragment.findNavController(this).navigate(directions)
-        }
-
-        musicButton.setOnClickListener {
-            val directions = GuitarRecordingFragmentDirections.action_guitarRecordingFragment_to_beatEditingFragment()
-            NavHostFragment.findNavController(this).navigate(directions)
-        }
-
+    // TODO: Rename method, update argument and hook method into UI event
+    fun onButtonPressed(uri: Uri) {
+        listener?.onFragmentInteraction(uri)
     }
 
     override fun onAttach(context: Context) {
@@ -131,12 +109,12 @@ class GuitarRecordingFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment DrumPlayBackFragment.
+         * @return A new instance of fragment MetronomeFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-                DrumPlayBackFragment().apply {
+                MetronomeFragment().apply {
                     arguments = Bundle().apply {
                         putString(ARG_PARAM1, param1)
                         putString(ARG_PARAM2, param2)
