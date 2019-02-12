@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_drum.*
 import kotlinx.android.synthetic.main.fragment_guitar_recording.*
 import kotlinx.android.synthetic.main.fragment_recorder.*
 import kotlinx.android.synthetic.main.fragment_recorder.view.*
+import java.io.File
 import kotlin.system.exitProcess
 
 
@@ -51,7 +52,11 @@ class GuitarRecordingFragment : Fragment() {
     private var permissionToRecordAccepted = false
     private var permissions: Array<String> = arrayOf(Manifest.permission.RECORD_AUDIO)
     private val REQUEST_RECORD_AUDIO_PERMISSION = 200
-    private val mFileName = ""
+
+    private val mFileName = "audiorecordtest.3gp"
+
+    var file : File? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -152,6 +157,10 @@ class GuitarRecordingFragment : Fragment() {
         }
 
 
+        file = File(context!!.filesDir, mFileName)
+
+        //context!!.openFileOutput(mFileName, Context.MODE_PRIVATE)
+
 
     }
 
@@ -159,7 +168,7 @@ class GuitarRecordingFragment : Fragment() {
         mMediaRecorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-            setOutputFile(mFileName)
+            //setOutputFile(file)
             setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
             prepare()
             start()
@@ -175,8 +184,10 @@ class GuitarRecordingFragment : Fragment() {
     }
 
     private fun startPlaying() {
+        var file = File(context!!.filesDir, mFileName)
+
         mPlayer = MediaPlayer().apply {
-            setDataSource(mFileName)
+            //setDataSource()
             prepare()
             start()
         }
