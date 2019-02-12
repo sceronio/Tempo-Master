@@ -45,5 +45,56 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cHatButton" />
 
+    <Button
+        android:id="@+id/test_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Record"
+        app:layout_constraintBottom_toTopOf="@+id/included_nav_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tomButton"
+        app:layout_constraintVertical_bias="0.492" />
+
+    <Button
+        android:id="@+id/test_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Play"
+        app:layout_constraintBottom_toTopOf="@+id/included_nav_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/test_record"
+        app:layout_constraintTop_toBottomOf="@+id/tomButton" />
+
+    <Button
+        android:id="@+id/test_stop_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Stop Recording"
+        app:layout_constraintBottom_toTopOf="@+id/included_nav_bar"
+        app:layout_constraintTop_toBottomOf="@+id/test_record"
+        tools:layout_editor_absoluteX="27dp" />
+
+    <Button
+        android:id="@+id/test_stop_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="stop playing"
+        app:layout_constraintBottom_toTopOf="@+id/included_nav_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/test_stop_record"
+        app:layout_constraintTop_toBottomOf="@+id/test_play" />
+
 
 </android.support.constraint.ConstraintLayout>

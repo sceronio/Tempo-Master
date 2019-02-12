@@ -1,18 +1,30 @@
 package com.example.skyler.guitarapp
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.media.MediaPlayer
+import android.media.MediaRecorder
+import android.media.MediaRecorder.AudioSource.MIC
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.support.constraint.ConstraintLayout
+import android.support.constraint.ConstraintSet
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import androidx.navigation.fragment.NavHostFragment
 import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
 import kotlinx.android.synthetic.main.fragment_drum.*
+import kotlinx.android.synthetic.main.fragment_guitar_recording.*
 import kotlinx.android.synthetic.main.fragment_recorder.*
 import kotlinx.android.synthetic.main.fragment_recorder.view.*
+import kotlin.system.exitProcess
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -34,6 +46,13 @@ class GuitarRecordingFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    private var mMediaRecorder: MediaRecorder? = null
+    private var mPlayer: MediaPlayer? = null
+    private var permissionToRecordAccepted = false
+    private var permissions: Array<String> = arrayOf(Manifest.permission.RECORD_AUDIO)
+    private val REQUEST_RECORD_AUDIO_PERMISSION = 200
+    private val mFileName = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +60,34 @@ class GuitarRecordingFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        requestPermissions(permissions, REQUEST_RECORD_AUDIO_PERMISSION)
+
+
+        /* val mRecordButton = RecordButton(context ?: exitProcess(1))
+         val mPlayButton = PlayButton(context ?: exitProcess(1))
+         val layout = ConstraintLayout(context)
+
+         ConstraintLayout(context).apply {
+             *//* addView(mRecordButton)
+             addView(mRecordButton, ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT))*//*
+            addView(mRecordButton,
+                    0)
+            addView(mPlayButton,
+                    1)
+        }
+
+        ConstraintSet().apply {
+            connect(mRecordButton.id, ConstraintSet.TOP, layout.id, ConstraintSet.TOP, 100)
+            applyTo(layout)
+        }*/
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_guitar_recording, container, false)
     }
 
@@ -71,6 +113,23 @@ class GuitarRecordingFragment : Fragment() {
             ClickUtils.clickPlay(buttonMap)
         }
 
+        test_record.setOnClickListener {
+            startRecording()
+        }
+
+        test_stop_record.setOnClickListener {
+            stopRecording()
+        }
+
+        test_play.setOnClickListener {
+            startPlaying()
+        }
+
+        test_stop_play.setOnClickListener {
+            stopPlaying()
+        }
+
+
         //navbar code
         drumButton.setOnClickListener {
             val directions = GuitarRecordingFragmentDirections.action_guitarRecordingFragment_to_drumFragment()
@@ -92,6 +151,103 @@ class GuitarRecordingFragment : Fragment() {
             NavHostFragment.findNavController(this).navigate(directions)
         }
 
+
+
+    }
+
+    private fun startRecording() {
+        mMediaRecorder = MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+            setOutputFile(mFileName)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+            prepare()
+            start()
+        }
+    }
+
+    private fun stopRecording() {
+        mMediaRecorder?.apply {
+            stop()
+            release()
+        }
+        mMediaRecorder = null
+    }
+
+    private fun startPlaying() {
+        mPlayer = MediaPlayer().apply {
+            setDataSource(mFileName)
+            prepare()
+            start()
+        }
+    }
+
+    private fun stopPlaying() {
+        mPlayer?.release()
+        mPlayer = null
+    }
+
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<String>,
+            grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionToRecordAccepted = if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION) {
+            grantResults[0] == PackageManager.PERMISSION_GRANTED
+        } else {
+            false
+        }
+        //if (!permissionToRecordAccepted) finish()
+    }
+
+    internal inner class RecordButton(ctx: Context) : Button(ctx) {
+
+        var mStartRecording = true
+
+        var clicker: OnClickListener = OnClickListener {
+            onRecord(mStartRecording)
+            text = when (mStartRecording) {
+                true -> "Stop recording"
+                false -> "Start recording"
+            }
+            mStartRecording = !mStartRecording
+        }
+
+        init {
+            text = "Start recording"
+            setOnClickListener(clicker)
+        }
+    }
+
+    internal inner class PlayButton(ctx: Context) : Button(ctx) {
+        var mStartPlaying = true
+        var clicker: OnClickListener = OnClickListener {
+            onPlay(mStartPlaying)
+            text = when (mStartPlaying) {
+                true -> "Stop playing"
+                false -> "Start playing"
+            }
+            mStartPlaying = !mStartPlaying
+        }
+
+        init {
+            text = "Start playing"
+            setOnClickListener(clicker)
+        }
+    }
+
+
+    private fun onRecord(start: Boolean) = if (start) {
+        startRecording()
+    } else {
+        stopRecording()
+    }
+
+    private fun onPlay(start: Boolean) = if (start) {
+        startPlaying()
+    } else {
+        stopPlaying()
     }
 
     override fun onAttach(context: Context) {
