@@ -1,14 +1,17 @@
 package com.example.skyler.guitarapp;
 import com.google.gson.Gson;
 
-public class PlaybackItemModel {
+public class DrumPlaybackItemModel implements PlaybackItem{
 
     private String fileName;
     private String serializedRecording;
     private RecordedBeat recording;
 
+    public DrumPlaybackItemModel() {
+        this("", "");
+    }
 
-    public PlaybackItemModel(String filename, String serializedRecording) {
+    public DrumPlaybackItemModel(String filename, String serializedRecording) {
         Gson gson = new Gson();
 
         this.fileName = filename;

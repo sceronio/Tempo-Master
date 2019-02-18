@@ -176,8 +176,8 @@ class DrumFragment : Fragment() {
 
         //convert recordedBeat to json
         val gson = Gson()
-        val serializedObject = gson.toJson(PlaybackItemModel("recording" + numRecordings,
-            gson.toJson(recordedBeat)))
+        val serializedObject = gson.toJson(DrumPlaybackItemModel("recording" + numRecordings,
+                gson.toJson(recordedBeat)))
 
         //debug code to clear shared preferences before saving a beat
        /* prefsEditor.clear()

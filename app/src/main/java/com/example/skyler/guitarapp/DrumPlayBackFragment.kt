@@ -1,7 +1,6 @@
 package com.example.skyler.guitarapp
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -9,8 +8,6 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
@@ -71,19 +68,19 @@ class DrumPlayBackFragment : Fragment() {
         //get keys in shared preferences for populating list with recordings
         val keys = prefMap.keys.toTypedArray()
 
-        val playbackItemModelList : ArrayList<PlaybackItemModel> = arrayListOf()
+        val playbackItemList : ArrayList<PlaybackItem> = arrayListOf()
 
         //create list of playbackItemModels
         for(filename in keys) {
             var currentPlaybackObject = prefMap[filename]
             if(currentPlaybackObject is String) {
-                currentPlaybackObject = gson.fromJson(currentPlaybackObject, PlaybackItemModel::class.java)
-                playbackItemModelList.add(currentPlaybackObject)
+                currentPlaybackObject = gson.fromJson(currentPlaybackObject, PlaybackItem::class.java)
+                playbackItemList.add(currentPlaybackObject)
             }
         }
 
         //create the adapter for playbackItemModelList
-        adapter = PlaybackItemsAdapter(context, playbackItemModelList)
+        adapter = PlaybackItemsAdapter(context, playbackItemList)
         //set adapter on the view
         playback_list_view.adapter = adapter
 

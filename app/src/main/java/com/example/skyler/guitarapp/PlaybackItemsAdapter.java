@@ -1,6 +1,5 @@
 package com.example.skyler.guitarapp;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -10,13 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class PlaybackItemsAdapter extends ArrayAdapter<PlaybackItemModel> {
+public class PlaybackItemsAdapter extends ArrayAdapter<PlaybackItem> {
 
-    public PlaybackItemsAdapter(Context context, ArrayList<PlaybackItemModel> item) {
+    public PlaybackItemsAdapter(Context context, ArrayList<PlaybackItem> item) {
         super(context, 0, item);
     }
 
@@ -24,7 +22,7 @@ public class PlaybackItemsAdapter extends ArrayAdapter<PlaybackItemModel> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get the data item for this position
-        final PlaybackItemModel playbackItemModel = getItem(position);
+        final PlaybackItem playbackItemModel = getItem(position);
 
         ViewHolder mainViewHolder;
 
@@ -59,7 +57,7 @@ public class PlaybackItemsAdapter extends ArrayAdapter<PlaybackItemModel> {
 
             viewHolder.title = convertView.findViewById(R.id.filename);
             // Lookup view for data population
-            TextView filename = (TextView) convertView.findViewById(R.id.filename);
+            TextView filename = convertView.findViewById(R.id.filename);
             // Populate the data into the template view using the data object
             filename.setText(playbackItemModel.getFileName());
             convertView.setTag(viewHolder);
