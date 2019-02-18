@@ -16,7 +16,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
 import kotlinx.android.synthetic.main.fragment_drum_play_back.*
 
-
+//region Auto-Generated Variables and Comments
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -33,13 +33,19 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
+//endregion
+
 class DrumPlayBackFragment : Fragment() {
+
+    //region Globals
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
     var adapter: PlaybackItemsAdapter? = null
+    //endregion
 
+    //region Life-Cycle Methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -54,26 +60,20 @@ class DrumPlayBackFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_drum_play_back, container, false)
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //get shared preferences editor
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        var prefMap : MutableMap<String, *> = prefs.all
+        val prefMap : MutableMap<String, *> = prefs.all
         val gson = Gson()
-
 
         //get keys in shared preferences for populating list with recordings
         val keys = prefMap.keys.toTypedArray()
 
         val playbackItemModelList : ArrayList<PlaybackItemModel> = arrayListOf()
 
-        //create list of playbackitemmodels
+        //create list of playbackItemModels
         for(filename in keys) {
             var currentPlaybackObject = prefMap[filename]
             if(currentPlaybackObject is String) {
@@ -87,14 +87,7 @@ class DrumPlayBackFragment : Fragment() {
         //set adapter on the view
         playback_list_view.adapter = adapter
 
-        var pref_listener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
-           //notify adapter that it must refresh when shared preferences changes
-            //adapter?.notifyDataSetChanged()
-        }
-
-        prefs.registerOnSharedPreferenceChangeListener(pref_listener)
-
-        //navbar code
+        //region Navbar Code
         drumButton.setOnClickListener {
             val directions = DrumPlayBackFragmentDirections.action_drumPlayBackFragment_to_drumFragment()
             NavHostFragment.findNavController(this).navigate(directions)
@@ -114,8 +107,11 @@ class DrumPlayBackFragment : Fragment() {
             val directions = DrumPlayBackFragmentDirections.action_drumPlayBackFragment_to_guitarRecordingFragment()
             NavHostFragment.findNavController(this).navigate(directions)
         }
+        //endregion
     }
+    //endregion
 
+    //region Boilerplate Override Code
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
@@ -173,4 +169,5 @@ class DrumPlayBackFragment : Fragment() {
                     }
                 }
     }
+    //endregion
 }

@@ -74,11 +74,18 @@ object ClickUtils {
     fun clickStop(buttons : Map<String, Button>) {
         val recordButton : Button = buttons.get(RECORD) ?: throw NullPointerException("button RECORD not found")
         val stopButton : Button = buttons.get(STOP) ?: throw NullPointerException("button STOP not found")
+        val playButton : Button = buttons.get(PLAY) ?: throw NullPointerException("button PLAY not found")
+
         animate(stopButton)
         if(recording) {
             recordButton.setBackgroundResource(R.drawable.record_button)
             //stopButton.setBackgroundResource(R.drawable.stop_button)
             recording = false
+        }
+
+        if(playing) {
+            playButton.setBackgroundResource(R.drawable.play_button)
+            playing = false
         }
     }
 
