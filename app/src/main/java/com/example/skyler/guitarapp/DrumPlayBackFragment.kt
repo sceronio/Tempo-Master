@@ -13,6 +13,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
 import kotlinx.android.synthetic.main.fragment_drum_play_back.*
 
+
 //region Auto-Generated Variables and Comments
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,7 +40,7 @@ class DrumPlayBackFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
-    var adapter: PlaybackItemsAdapter? = null
+    var adapterDrum: DrumPlaybackItemsAdapter? = null
     //endregion
 
     //region Life-Cycle Methods
@@ -68,21 +69,21 @@ class DrumPlayBackFragment : Fragment() {
         //get keys in shared preferences for populating list with recordings
         val keys = prefMap.keys.toTypedArray()
 
-        val playbackItemList : ArrayList<PlaybackItem> = arrayListOf()
+        val playbackItemList : ArrayList<DrumPlaybackItemModel> = arrayListOf()
 
         //create list of playbackItemModels
         for(filename in keys) {
             var currentPlaybackObject = prefMap[filename]
             if(currentPlaybackObject is String) {
-                currentPlaybackObject = gson.fromJson(currentPlaybackObject, PlaybackItem::class.java)
+                currentPlaybackObject = gson.fromJson(currentPlaybackObject, DrumPlaybackItemModel::class.java)
                 playbackItemList.add(currentPlaybackObject)
             }
         }
 
-        //create the adapter for playbackItemModelList
-        adapter = PlaybackItemsAdapter(context, playbackItemList)
-        //set adapter on the view
-        playback_list_view.adapter = adapter
+        //create the adapterDrum for playbackItemModelList
+        adapterDrum = DrumPlaybackItemsAdapter(context, playbackItemList)
+        //set adapterDrum on the view
+        playback_list_view.adapter = adapterDrum
 
         //region Navbar Code
         drumButton.setOnClickListener {
@@ -126,7 +127,7 @@ class DrumPlayBackFragment : Fragment() {
     /*fun onSharedPreferenceChanged(sharedPreferences : SharedPreferences, key: String) {
         getActivity()?.runOnUiThread{ object: Runnable {
             override fun run() {
-                adapter?.notifyDataSetChanged()
+                adapterDrum?.notifyDataSetChanged()
             }
         }
     } }*/

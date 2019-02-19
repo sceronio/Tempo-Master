@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class PlaybackItemsAdapter extends ArrayAdapter<PlaybackItem> {
+public class DrumPlaybackItemsAdapter extends ArrayAdapter<DrumPlaybackItemModel> {
 
-    public PlaybackItemsAdapter(Context context, ArrayList<PlaybackItem> item) {
+    public DrumPlaybackItemsAdapter(Context context, ArrayList<DrumPlaybackItemModel> item) {
         super(context, 0, item);
     }
 
@@ -22,7 +22,7 @@ public class PlaybackItemsAdapter extends ArrayAdapter<PlaybackItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get the data item for this position
-        final PlaybackItem playbackItemModel = getItem(position);
+        final DrumPlaybackItemModel drumPlaybackItemModel = getItem(position);
 
         ViewHolder mainViewHolder;
 
@@ -37,7 +37,7 @@ public class PlaybackItemsAdapter extends ArrayAdapter<PlaybackItem> {
                 @Override
                 public void onClick(View v) {
                     Player player = new Player(getContext());
-                    player.playNext(0, playbackItemModel.getRecording());
+                    player.playNext(0, drumPlaybackItemModel.getRecording());
                 }
             });
 
@@ -47,11 +47,11 @@ public class PlaybackItemsAdapter extends ArrayAdapter<PlaybackItem> {
                     //remove item from shared preferences
                     SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
                     SharedPreferences.Editor editor = settings.edit();
-                    editor.remove(playbackItemModel.getFileName());
+                    editor.remove(drumPlaybackItemModel.getFileName());
                     editor.apply();
-                    //remove item from adapter
-                    PlaybackItemsAdapter.super.remove(playbackItemModel);
-                    PlaybackItemsAdapter.super.notifyDataSetChanged();
+                    //remove item from adapterDrum
+                    DrumPlaybackItemsAdapter.super.remove(drumPlaybackItemModel);
+                    DrumPlaybackItemsAdapter.super.notifyDataSetChanged();
                 }
             });
 
@@ -59,7 +59,7 @@ public class PlaybackItemsAdapter extends ArrayAdapter<PlaybackItem> {
             // Lookup view for data population
             TextView filename = convertView.findViewById(R.id.filename);
             // Populate the data into the template view using the data object
-            filename.setText(playbackItemModel.getFileName());
+            filename.setText(drumPlaybackItemModel.getFileName());
             convertView.setTag(viewHolder);
         }
         else {

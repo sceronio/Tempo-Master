@@ -1,7 +1,7 @@
 package com.example.skyler.guitarapp;
 import com.google.gson.Gson;
 
-public class DrumPlaybackItemModel implements PlaybackItem{
+public class DrumPlaybackItemModel {
 
     private String fileName;
     private String serializedRecording;
