@@ -63,14 +63,11 @@ public class RecordingPlaybackItemsAdapter extends ArrayAdapter<RecordingPlaybac
             viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //remove item from shared preferences
-                   /* SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.remove(recordingPlaybackItemModel.getFileName());
-                    editor.apply();
+                    //remove file from system
+                    recordingPlaybackItemModel.getFileDescriptor().delete();
                     //remove item from adapterDrum
                     RecordingPlaybackItemsAdapter.super.remove(recordingPlaybackItemModel);
-                    RecordingPlaybackItemsAdapter.super.notifyDataSetChanged();*/
+                    RecordingPlaybackItemsAdapter.super.notifyDataSetChanged();
                 }
             });
 
