@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.navigation.fragment.NavHostFragment
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
 import kotlinx.android.synthetic.main.fragment_drum_play_back.*
+import java.io.File
 
 
 //region Auto-Generated Variables and Comments
@@ -57,23 +59,26 @@ class DrumPlayBackFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_drum_play_back, container, false)
     }
+    //endregion
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //get shared preferences editor
+        //region Make DrumPlayBackItemModelList
+        //get shared prefs
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val prefMap : MutableMap<String, *> = prefs.all
+
         val gson = Gson()
 
-        //get keys in shared preferences for populating list with recordings
+        //get keys for shared preferences
         val keys = prefMap.keys.toTypedArray()
 
-        val playbackItemList : ArrayList<DrumPlaybackItemModel> = arrayListOf()
-
         //create list of playbackItemModels
+        val playbackItemList : ArrayList<DrumPlaybackItemModel> = arrayListOf()
         for(filename in keys) {
             var currentPlaybackObject = prefMap[filename]
+            //deserialize each object to a DrumPlaybackItemModel and add it to the list
             if(currentPlaybackObject is String) {
                 currentPlaybackObject = gson.fromJson(currentPlaybackObject, DrumPlaybackItemModel::class.java)
                 playbackItemList.add(currentPlaybackObject)
@@ -82,8 +87,36 @@ class DrumPlayBackFragment : Fragment() {
 
         //create the adapterDrum for playbackItemModelList
         adapterDrum = DrumPlaybackItemsAdapter(context, playbackItemList)
-        //set adapterDrum on the view
         playback_list_view.adapter = adapterDrum
+        //endregion
+
+        //region make RecordingPlaybackItemModel list
+        //this gives you a reference to the file system
+        val path: File = context!!.filesDir
+        var fileList = path.list()
+        var fileDescriptorList = path.listFiles()
+        var recordingItemList : ArrayList<RecordingPlaybackItemModel> = arrayListOf()
+
+        var i = 0
+        while(i < fileList.size) {
+            recordingItemList.add(RecordingPlaybackItemModel(fileList[i], fileDescriptorList[i]))
+            i++
+        }
+
+        var adapterRecording = RecordingPlaybackItemsAdapter(context, recordingItemList)
+
+        //var adapterRecording = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, fileList)
+        //endregion
+
+        //region Switch Buttons
+        recordings_switch.setOnClickListener {
+            playback_list_view.adapter = adapterRecording
+        }
+
+        drum_beats_switch.setOnClickListener {
+            playback_list_view.adapter = adapterDrum
+        }
+        //endregion
 
         //region Navbar Code
         drumButton.setOnClickListener {
@@ -107,7 +140,6 @@ class DrumPlayBackFragment : Fragment() {
         }
         //endregion
     }
-    //endregion
 
     //region Boilerplate Override Code
     override fun onAttach(context: Context) {

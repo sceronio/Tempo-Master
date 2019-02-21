@@ -35,6 +35,8 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class DrumFragment : Fragment() {
+
+    //region Globals
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -50,8 +52,9 @@ class DrumFragment : Fragment() {
 
     //UI state variables
     var buttonMap : Map<String, Button> = hashMapOf()
+    //endregion globals
 
-
+    //region Life-Cycle Methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -66,11 +69,11 @@ class DrumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //code for recorder fragment buttons
         this.buttonMap = hashMapOf(ClickUtils.getPlay() to playButton,
          ClickUtils.getRecord() to recordButton,
          ClickUtils.getStop() to stopButton)
 
+        //region Recoring Bar Code
         recordButton.setOnClickListener {
             //reset the variables that keep track of the state of the currently recorded beat
             recordedBeat.reset()
@@ -96,8 +99,9 @@ class DrumFragment : Fragment() {
         saveButton.setOnClickListener {
             saveRecording()
         }
+        //endregion
 
-        //code for each of the drum buttons
+        //region Drum Button Listeners
         crashButton.setOnClickListener {
             onDrumButtonPressed(1)
         }
@@ -122,8 +126,9 @@ class DrumFragment : Fragment() {
         cHatButton.setOnClickListener {
             onDrumButtonPressed(8)
         }
+        //endregion
 
-        //navbar code
+        //region Bottom Nav Bar Listeners
         playbackButton.setOnClickListener{
             val directions = DrumFragmentDirections.action_drumFragment_to_drumPlayBackFragment()
             NavHostFragment.findNavController(this).navigate(directions)
@@ -143,8 +148,11 @@ class DrumFragment : Fragment() {
             val directions = DrumFragmentDirections.action_drumFragment_to_guitarRecordingFragment()
             NavHostFragment.findNavController(this).navigate(directions)
         }
+        //endregion
     }
+    //endregion
 
+    //region Beat Management Methods
     //play the next sound in the list of recorded sounds
     fun playNext(index: Int, recordedBeat: RecordedBeat)
     {
@@ -179,10 +187,6 @@ class DrumFragment : Fragment() {
         val serializedObject = gson.toJson(DrumPlaybackItemModel("recording" + numRecordings,
                 gson.toJson(recordedBeat)))
 
-        //debug code to clear shared preferences before saving a beat
-       /* prefsEditor.clear()
-        prefsEditor.commit()*/
-
         //store json in sharedPreferences
         prefsEditor.putString("recording" + numRecordings, serializedObject)
 
@@ -207,8 +211,9 @@ class DrumFragment : Fragment() {
             }
         }.start()
     }
+    //endregion
 
-
+    //region Boilerplate Override Methods
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -258,4 +263,5 @@ class DrumFragment : Fragment() {
         super.onDetach()
         listener = null
     }
+    //endregion
 }

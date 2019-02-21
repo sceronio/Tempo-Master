@@ -7,12 +7,14 @@ import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.NavHostFragment
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
 import kotlinx.android.synthetic.main.fragment_recorder.*
 import java.io.File
@@ -36,11 +38,8 @@ class GuitarRecordingFragment : Fragment() {
     private var permissions: Array<String> = arrayOf(Manifest.permission.RECORD_AUDIO)
     private val REQUEST_RECORD_AUDIO_PERMISSION = 200
 
-    private val mFileName = "audiorecordtest.3gp"
-
-    var file: File? = null
-    val filename = "myfile"
-    val fileContents = "!!!!!!!!!!!!!!!!!!!!!!Hello world!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    private var mFileNameBase = "recording"
+    private var mFileName = ""
     //endregion
 
     //region Life-Cycle Methods
@@ -87,7 +86,8 @@ class GuitarRecordingFragment : Fragment() {
         }
 
         saveButton.setOnClickListener {
-
+            //increment number of saved audio recordings for naming
+            saveRecording()
         }
         //endregion
 
@@ -118,9 +118,15 @@ class GuitarRecordingFragment : Fragment() {
     //region Recording Management Code
     private fun startRecording() {
         Thread(Runnable {
+            //change filename anytime you start recording
+            //this gives you a reference to the file you want to write to in the file system
+            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            //see how many recordings we have, this is used in naming recorded objects
+            var numRecordings = prefs.getInt("numAudioRecordings", 0)
+            mFileName = mFileNameBase + numRecordings + ".3gp"
+
             //this gives you a reference to the file system
             val path: File = context!!.filesDir
-            //this gives you a reference to the file you want to write to in the file system
             val actualFile = File(path, mFileName)
             //this opens a file output stream to the file you want to write to
             val fileStream = FileOutputStream(actualFile)
@@ -161,6 +167,20 @@ class GuitarRecordingFragment : Fragment() {
     private fun stopPlaying() {
         mPlayer?.release()
         mPlayer = null
+    }
+
+    private fun saveRecording() {
+        //get shared preferences editor
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val prefsEditor = prefs.edit()
+
+        //see how many recordings we have, this is used in naming recorded objects
+        var numRecordings = prefs.getInt("numAudioRecordings", 0)
+
+        numRecordings++
+        prefsEditor.putInt("numAudioRecordings", numRecordings)
+
+        prefsEditor.apply()
     }
     //endregion
 
