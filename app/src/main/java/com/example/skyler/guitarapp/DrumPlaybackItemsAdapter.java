@@ -14,8 +14,14 @@ import java.util.ArrayList;
 
 public class DrumPlaybackItemsAdapter extends ArrayAdapter<DrumPlaybackItemModel> {
 
-    public DrumPlaybackItemsAdapter(Context context, ArrayList<DrumPlaybackItemModel> item) {
-        super(context, 0, item);
+    //if you delete item 0, it is removed from the screen, but if you touch item 0 again, android still
+    // thinks the item at position 0 was the one that was deleted before
+
+    ArrayList<DrumPlaybackItemModel> itemList;
+
+    public DrumPlaybackItemsAdapter(Context context, ArrayList<DrumPlaybackItemModel> itemList) {
+        super(context, 0, itemList);
+        this.itemList = itemList;
     }
 
     @Override
@@ -23,6 +29,7 @@ public class DrumPlaybackItemsAdapter extends ArrayAdapter<DrumPlaybackItemModel
 
         // Get the data item for this position
         final DrumPlaybackItemModel drumPlaybackItemModel = getItem(position);
+        final int finalPosition = position;
 
         ViewHolder mainViewHolder;
 
@@ -44,13 +51,19 @@ public class DrumPlaybackItemsAdapter extends ArrayAdapter<DrumPlaybackItemModel
             viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    DrumPlaybackItemModel selectedItem = getItem(finalPosition);
+
                     //remove item from shared preferences
                     SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
                     SharedPreferences.Editor editor = settings.edit();
-                    editor.remove(drumPlaybackItemModel.getFileName());
+                    editor.remove(selectedItem.getFileName());
                     editor.apply();
+
                     //remove item from adapterDrum
-                    DrumPlaybackItemsAdapter.super.remove(drumPlaybackItemModel);
+                    DrumPlaybackItemsAdapter.super.remove(selectedItem);
+
+                    //notify the adapter that you have modified the dataset
                     DrumPlaybackItemsAdapter.super.notifyDataSetChanged();
                 }
             });

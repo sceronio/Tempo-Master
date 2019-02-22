@@ -1,9 +1,7 @@
 package com.example.skyler.guitarapp;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.File;
 import java.io.FileDescriptor;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 
 public class RecordingPlaybackItemsAdapter extends ArrayAdapter<RecordingPlaybackItemModel> {
@@ -27,6 +23,7 @@ public class RecordingPlaybackItemsAdapter extends ArrayAdapter<RecordingPlaybac
 
         // Get the data item for this position
         final RecordingPlaybackItemModel recordingPlaybackItemModel = getItem(position);
+        final int finalPosition = position;
 
         RecordingPlaybackItemsAdapter.ViewHolder mainViewHolder;
 
@@ -63,10 +60,11 @@ public class RecordingPlaybackItemsAdapter extends ArrayAdapter<RecordingPlaybac
             viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    RecordingPlaybackItemModel selectedItem = getItem(finalPosition);
                     //remove file from system
-                    recordingPlaybackItemModel.getFileDescriptor().delete();
+                    selectedItem.getFileDescriptor().delete();
                     //remove item from adapterDrum
-                    RecordingPlaybackItemsAdapter.super.remove(recordingPlaybackItemModel);
+                    RecordingPlaybackItemsAdapter.super.remove(selectedItem);
                     RecordingPlaybackItemsAdapter.super.notifyDataSetChanged();
                 }
             });

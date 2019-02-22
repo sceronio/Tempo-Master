@@ -8,13 +8,11 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.navigation.fragment.NavHostFragment
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
 import kotlinx.android.synthetic.main.fragment_drum_play_back.*
 import java.io.File
-
 
 //region Auto-Generated Variables and Comments
 // TODO: Rename parameter arguments, choose names that match
@@ -93,9 +91,9 @@ class DrumPlayBackFragment : Fragment() {
         //region make RecordingPlaybackItemModel list
         //this gives you a reference to the file system
         val path: File = context!!.filesDir
-        var fileList = path.list()
-        var fileDescriptorList = path.listFiles()
-        var recordingItemList : ArrayList<RecordingPlaybackItemModel> = arrayListOf()
+        val fileList = path.list()
+        val fileDescriptorList = path.listFiles()
+        val recordingItemList : ArrayList<RecordingPlaybackItemModel> = arrayListOf()
 
         var i = 0
         while(i < fileList.size) {
@@ -103,9 +101,7 @@ class DrumPlayBackFragment : Fragment() {
             i++
         }
 
-        var adapterRecording = RecordingPlaybackItemsAdapter(context, recordingItemList)
-
-        //var adapterRecording = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, fileList)
+        val adapterRecording = RecordingPlaybackItemsAdapter(context, recordingItemList)
         //endregion
 
         //region Switch Buttons
