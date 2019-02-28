@@ -14,9 +14,6 @@ import java.util.ArrayList;
 
 public class DrumPlaybackItemsAdapter extends ArrayAdapter<DrumPlaybackItemModel> {
 
-    //if you delete item 0, it is removed from the screen, but if you touch item 0 again, android still
-    // thinks the item at position 0 was the one that was deleted before
-
     ArrayList<DrumPlaybackItemModel> itemList;
 
     public DrumPlaybackItemsAdapter(Context context, ArrayList<DrumPlaybackItemModel> itemList) {
