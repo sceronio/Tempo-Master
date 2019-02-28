@@ -3,16 +3,21 @@ package com.example.skyler.guitarapp
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.NavHostFragment
+import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_beat_editing.*
 import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
 import kotlinx.android.synthetic.main.fragment_drum.*
+import kotlinx.android.synthetic.main.fragment_drum_play_back.*
 import kotlinx.android.synthetic.main.fragment_recorder.*
 import kotlinx.android.synthetic.main.fragment_recorder.view.*
+import java.io.File
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,11 +35,15 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class BeatEditingFragment : Fragment() {
+
+    //region Globals
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    //endregion
 
+    //region Life-Cycle Methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -48,16 +57,63 @@ class BeatEditingFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_beat_editing, container, false)
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
+    //endregion
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //navbar code
+        //region Make DrumPlayBackItemModelList
+        //get shared prefs
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val prefMap : MutableMap<String, *> = prefs.all
+
+        val gson = Gson()
+
+        //get keys for shared preferences
+        val keys = prefMap.keys.toTypedArray()
+
+        //create list of playbackItemModels
+        val playbackItemList : ArrayList<DrumPlaybackItemModel> = arrayListOf()
+        for(filename in keys) {
+            var currentPlaybackObject = prefMap[filename]
+            //deserialize each object to a DrumPlaybackItemModel and add it to the list
+            if(currentPlaybackObject is String) {
+                currentPlaybackObject = gson.fromJson(currentPlaybackObject, DrumPlaybackItemModel::class.java)
+                playbackItemList.add(currentPlaybackObject)
+            }
+        }
+
+        //create the adapterDrum for playbackItemModelList
+        val comboAdapterDrum = ComboDrumPlaybackItemsAdapter(context, playbackItemList)
+        combo_list_view.adapter = comboAdapterDrum
+        //endregion
+
+        //region make RecordingPlaybackItemModel list
+        //this gives you a reference to the file system
+        val path: File = context!!.filesDir
+        val fileList = path.list()
+        val fileDescriptorList = path.listFiles()
+        val recordingItemList : ArrayList<RecordingPlaybackItemModel> = arrayListOf()
+
+        var i = 0
+        while(i < fileList.size) {
+            recordingItemList.add(RecordingPlaybackItemModel(fileList[i], fileDescriptorList[i]))
+            i++
+        }
+
+        val comboAdapterRecording = ComboRecordingPlaybackItemsAdapter(context, recordingItemList)
+        //endregion
+
+        //region Switch Buttons
+        combo_recordings.setOnClickListener {
+            combo_list_view.adapter = comboAdapterRecording
+        }
+
+        combo_beats.setOnClickListener {
+            combo_list_view.adapter = comboAdapterDrum
+        }
+
+        //region Navbar Code
         drumButton.setOnClickListener {
             val directions = BeatEditingFragmentDirections.action_beatEditingFragment_to_drumFragment()
             NavHostFragment.findNavController(this).navigate(directions)
@@ -77,6 +133,13 @@ class BeatEditingFragment : Fragment() {
             val directions = BeatEditingFragmentDirections.action_beatEditingFragment_to_guitarRecordingFragment()
             NavHostFragment.findNavController(this).navigate(directions)
         }
+        //endregion
+    }
+
+    //region Boilerplate Override Code
+    // TODO: Rename method, update argument and hook method into UI event
+    fun onButtonPressed(uri: Uri) {
+        listener?.onFragmentInteraction(uri)
     }
 
     override fun onAttach(context: Context) {
@@ -128,4 +191,5 @@ class BeatEditingFragment : Fragment() {
                     }
                 }
     }
+    //endregion
 }
