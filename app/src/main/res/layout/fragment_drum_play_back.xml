@@ -27,22 +27,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3"></ListView>
 
-    <include
-        android:id="@+id/included_nav_bar"
-        layout="@layout/fragment_bottom_nav_bar"
-        android:layout_width="411dp"
-        android:layout_height="56dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteY="731dp" />
-
     <Button
         android:id="@+id/drum_beats_switch"
-        android:layout_width="192dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="2dp"
         android:text="Drum Beats"
         app:layout_constraintBottom_toTopOf="@+id/playback_list_view"
         app:layout_constraintEnd_toStartOf="@+id/recordings_switch"
@@ -51,12 +39,14 @@
 
     <Button
         android:id="@+id/recordings_switch"
-        android:layout_width="209dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Recordings"
-        app:layout_constraintBottom_toTopOf="@+id/playback_list_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/included_recorder" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toStartOf="@+id/combined_beats"
+        app:layout_constraintStart_toEndOf="@+id/drum_beats_switch"
+        app:layout_constraintTop_toBottomOf="@+id/included_recorder"
+        app:layout_constraintVertical_bias="0.0" />
 
     <android.support.constraint.Barrier
         android:id="@+id/barrier"
@@ -76,6 +66,27 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="104dp" />
+
+    <Button
+        android:id="@+id/combined_beats"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Mixes"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/recordings_switch"
+        app:layout_constraintTop_toBottomOf="@+id/included_recorder" />
+
+    <include
+        android:id="@+id/included_nav_bar"
+        layout="@layout/fragment_bottom_nav_bar"
+        android:layout_width="411dp"
+        android:layout_height="56dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteY="731dp" />
 
 
 </android.support.constraint.ConstraintLayout>

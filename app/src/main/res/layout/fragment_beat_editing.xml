@@ -7,20 +7,6 @@
     tools:context=".DrumFragment">
 
 
-    <Button
-        android:id="@+id/tomButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="148dp"
-        android:layout_marginBottom="520dp"
-        android:text="Beat Editing"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/included_recorder" />
-
     <include
         android:id="@+id/included_nav_bar"
         layout="@layout/fragment_bottom_nav_bar"
@@ -31,8 +17,40 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cHatButton" />
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/combo_recordings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Recordings"
+        app:layout_constraintEnd_toStartOf="@+id/combo_beats"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/combo_beats"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Beats"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/combo_recordings"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/included_nav_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/combo_beats" />
 
 
 </android.support.constraint.ConstraintLayout>
