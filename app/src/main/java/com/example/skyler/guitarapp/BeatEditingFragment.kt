@@ -20,6 +20,11 @@ import kotlinx.android.synthetic.main.fragment_recorder.view.*
 import java.io.File
 
 
+/*TODO: creating a combined item will simply create a combinationPlaybackItemModel object which
+ * is just an object that wraps around RecordingPlaybackItemModel and DrumPlaybackItemModel. To play
+ * one of these objects, I will fetch all the necessary info, prepare the necessary playback mechanisms
+ * on their necessary threads and then simultaneously initiate playback on each item*/
+
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"

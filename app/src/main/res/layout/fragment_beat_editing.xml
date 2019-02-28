@@ -48,10 +48,45 @@
         android:id="@+id/combo_list_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/combo_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/combo_beats"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/combine"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Combine"
+        app:layout_constraintBottom_toTopOf="@+id/included_nav_bar"
+        app:layout_constraintEnd_toStartOf="@+id/combo_test"
+        app:layout_constraintHorizontal_bias="0.421"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/combo_list_view"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/combo_test"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Test"
+        app:layout_constraintBottom_toTopOf="@+id/included_nav_bar"
+        app:layout_constraintEnd_toStartOf="@+id/combo_save"
+        app:layout_constraintStart_toEndOf="@+id/combine"
+        app:layout_constraintTop_toBottomOf="@+id/combo_list_view"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/combo_save"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Save"
         app:layout_constraintBottom_toTopOf="@+id/included_nav_bar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/combo_beats" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/combo_test" />
 
 
 </android.support.constraint.ConstraintLayout>
