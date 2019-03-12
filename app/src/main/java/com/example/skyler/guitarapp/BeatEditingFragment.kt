@@ -15,6 +15,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_beat_editing.*
 import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
 import java.io.File
+import java.lang.Thread.sleep
 
 
 /*TODO: creating a combined item will simply create a combinationPlaybackItemModel object which
@@ -79,7 +80,7 @@ class BeatEditingFragment : Fragment() {
         for(filename in keys) {
             var currentPlaybackObject = prefMap[filename]
             //deserialize each object to a DrumPlaybackItemModel and add it to the list
-            if(currentPlaybackObject is String) {
+            if(currentPlaybackObject is String && filename.contains("recording")) {
                 currentPlaybackObject = gson.fromJson(currentPlaybackObject, DrumPlaybackItemModel::class.java)
                 playbackItemList.add(currentPlaybackObject)
             }
@@ -109,10 +110,31 @@ class BeatEditingFragment : Fragment() {
         //region Combine Buttons
         combine.setOnClickListener {
 
-            //for now I will just combine the second items of each list
-            var chosenDrum : DrumPlaybackItemModel = comboAdapterDrum.getItem(1)
-            var chosenRecording : RecordingPlaybackItemModel = comboAdapterRecording.getItem(1)
+            //figure out which items were selected
+            var i = 0
+            var chosenRecording = RecordingPlaybackItemModel("didn't work recording", null)
+            var chosenDrum = DrumPlaybackItemModel("didn't work drum", null)
+            while(i < comboAdapterRecording.count) {
+                chosenRecording = comboAdapterRecording.getItem(i)
+                if(chosenRecording.isChecked) {
+                    //Toast.makeText(context, item1.fileName + " selected", Toast.LENGTH_SHORT).show()
+                    break
+                }
+                i++
+            }
 
+            i = 0
+            while(i < comboAdapterDrum.count) {
+                chosenDrum = comboAdapterDrum.getItem(i)
+                if(chosenDrum.isChecked) {
+                    //Toast.makeText(context, item2.fileName + " selected", Toast.LENGTH_SHORT).show()
+                    break
+                }
+                i++
+            }
+
+            Toast.makeText(context, chosenDrum.fileName + " and " +
+             chosenRecording.fileName + " selected", Toast.LENGTH_SHORT).show()
 
             //get shared preferences editor
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
@@ -136,26 +158,18 @@ class BeatEditingFragment : Fragment() {
             prefsEditor.putInt("numCombinations", numCombinations)
 
             prefsEditor.apply()
-
-            /*var i = 0
-            while(i < combo_list_view.adapter.count) {
-                val item = combo_list_view.adapter.getItem(i)
-                //Toast.makeText(context, "type of item: " + item.javaClass.name, Toast.LENGTH_LONG).show()
-                i++
-                if(item is DrumPlaybackItemModel && item.isChecked) {
-                    Toast.makeText(context, item.fileName + " selected", Toast.LENGTH_LONG).show()
-                }
-            }*/
         }
         //endregion
 
         //region Switch Buttons
         combo_recordings.setOnClickListener {
             combo_list_view.adapter = comboAdapterRecording
+            //remove_checks()
         }
 
         combo_beats.setOnClickListener {
             combo_list_view.adapter = comboAdapterDrum
+            //remove_checks()
         }
         //endregion
 
@@ -181,6 +195,22 @@ class BeatEditingFragment : Fragment() {
         }
         //endregion
     }
+
+    //manage state of UI
+    //remove checks from adapter when you navigate TO a listview
+    /*fun remove_checks() {
+        var i = 0
+        while(i < combo_list_view.adapter.count) {
+            val item = combo_list_view.adapter.getItem(i)
+            if(item is DrumPlaybackItemModel) {
+                item.setChecked(false)
+            }
+            if(item is RecordingPlaybackItemModel) {
+                item.setChecked(false)
+            }
+            i++
+        }
+    }*/
 
 
     //region Boilerplate Override Code

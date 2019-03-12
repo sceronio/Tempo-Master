@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.io.FileDescriptor;
@@ -56,6 +57,16 @@ public class ComboRecordingPlaybackItemsAdapter extends ArrayAdapter<RecordingPl
                 }
             });
 
+            viewHolder.checkBox = convertView.findViewById(R.id.selectBox);
+            viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(getContext(), "CHECKBOX TOUCHED", Toast.LENGTH_LONG).show();
+                    RecordingPlaybackItemModel item = getItem(finalPosition);
+                    item.toggleChecked();
+                }
+            });
+
             viewHolder.title = convertView.findViewById(R.id.combo_filename);
             // Lookup view for data population
             TextView filename = convertView.findViewById(R.id.combo_filename);
@@ -75,5 +86,6 @@ public class ComboRecordingPlaybackItemsAdapter extends ArrayAdapter<RecordingPl
     public class ViewHolder {
         Button playButton;
         TextView title;
+        CheckBox checkBox;
     }
 }
