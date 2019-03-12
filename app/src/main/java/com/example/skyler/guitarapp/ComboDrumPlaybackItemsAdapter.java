@@ -1,14 +1,14 @@
 package com.example.skyler.guitarapp;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -34,13 +34,23 @@ public class ComboDrumPlaybackItemsAdapter extends ArrayAdapter<DrumPlaybackItem
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.combination_item, parent, false);
             ViewHolder viewHolder = new ViewHolder();
-            viewHolder.playButton = convertView.findViewById(R.id.combo_play_button);
 
+            viewHolder.playButton = convertView.findViewById(R.id.combo_play_button);
             viewHolder.playButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Player player = new Player(getContext());
                     player.playNext(0, drumPlaybackItemModel.getRecording());
+                }
+            });
+
+            viewHolder.checkBox = convertView.findViewById(R.id.selectBox);
+            viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(getContext(), "CHECKBOX TOUCHED", Toast.LENGTH_LONG).show();
+                    DrumPlaybackItemModel item = getItem(finalPosition);
+                    item.toggleChecked();
                 }
             });
 
@@ -63,5 +73,6 @@ public class ComboDrumPlaybackItemsAdapter extends ArrayAdapter<DrumPlaybackItem
     public class ViewHolder {
         Button playButton;
         TextView title;
+        CheckBox checkBox;
     }
 }

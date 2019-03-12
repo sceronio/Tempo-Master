@@ -41,6 +41,8 @@ class DrumPlayBackFragment : Fragment() {
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
     var adapterDrum: DrumPlaybackItemsAdapter? = null
+    var adapterRecording : RecordingPlaybackItemsAdapter? = null
+    var adapterCombo : CombinationPlaybackItemsAdapter? = null
     //endregion
 
     //region Life-Cycle Methods
@@ -77,7 +79,7 @@ class DrumPlayBackFragment : Fragment() {
         for(filename in keys) {
             var currentPlaybackObject = prefMap[filename]
             //deserialize each object to a DrumPlaybackItemModel and add it to the list
-            if(currentPlaybackObject is String) {
+            if(currentPlaybackObject is String && filename.contains("recording")) {
                 currentPlaybackObject = gson.fromJson(currentPlaybackObject, DrumPlaybackItemModel::class.java)
                 playbackItemList.add(currentPlaybackObject)
             }
@@ -101,7 +103,23 @@ class DrumPlayBackFragment : Fragment() {
             i++
         }
 
-        val adapterRecording = RecordingPlaybackItemsAdapter(context, recordingItemList)
+        adapterRecording = RecordingPlaybackItemsAdapter(context, recordingItemList)
+        //endregion
+
+        //region make CombinationPlaybackItemModel list
+        //create list of playbackItemModels
+        val combinationItemList : ArrayList<CombinationPlaybackItemModel> = arrayListOf()
+        for(filename in keys) {
+            var currentPlaybackObject = prefMap[filename]
+            //deserialize each object to a DrumPlaybackItemModel and add it to the list
+            if(currentPlaybackObject is String && filename.contains("combination")) {
+                currentPlaybackObject = gson.fromJson(currentPlaybackObject, CombinationPlaybackItemModel::class.java)
+                combinationItemList.add(currentPlaybackObject)
+            }
+        }
+
+        //create adapter
+        adapterCombo = CombinationPlaybackItemsAdapter(context, combinationItemList)
         //endregion
 
         //region Switch Buttons
@@ -111,6 +129,10 @@ class DrumPlayBackFragment : Fragment() {
 
         drum_beats_switch.setOnClickListener {
             playback_list_view.adapter = adapterDrum
+        }
+
+        combined_beats.setOnClickListener {
+            playback_list_view.adapter = adapterCombo
         }
         //endregion
 

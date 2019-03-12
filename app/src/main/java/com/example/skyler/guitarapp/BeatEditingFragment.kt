@@ -8,15 +8,12 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.CheckBox
+import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_beat_editing.*
 import kotlinx.android.synthetic.main.fragment_bottom_nav_bar.*
-import kotlinx.android.synthetic.main.fragment_drum.*
-import kotlinx.android.synthetic.main.fragment_drum_play_back.*
-import kotlinx.android.synthetic.main.fragment_recorder.*
-import kotlinx.android.synthetic.main.fragment_recorder.view.*
 import java.io.File
 
 
@@ -109,6 +106,49 @@ class BeatEditingFragment : Fragment() {
         val comboAdapterRecording = ComboRecordingPlaybackItemsAdapter(context, recordingItemList)
         //endregion
 
+        //region Combine Buttons
+        combine.setOnClickListener {
+
+            //for now I will just combine the second items of each list
+            var chosenDrum : DrumPlaybackItemModel = comboAdapterDrum.getItem(1)
+            var chosenRecording : RecordingPlaybackItemModel = comboAdapterRecording.getItem(1)
+
+
+            //get shared preferences editor
+            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            val prefsEditor = prefs.edit()
+
+            //see how many recordings we have, this is used in naming recorded objects
+            var numCombinations = prefs.getInt("numCombinations", 0)
+
+
+            var combination : CombinationPlaybackItemModel = CombinationPlaybackItemModel(
+             "combination" + numCombinations, chosenRecording, chosenDrum)
+
+            //convert recordedBeat to json
+            val gson = Gson()
+            val serializedObject = gson.toJson(combination)
+
+            //store json in sharedPreferences
+            prefsEditor.putString("combination" + numCombinations, serializedObject)
+
+            numCombinations++
+            prefsEditor.putInt("numCombinations", numCombinations)
+
+            prefsEditor.apply()
+
+            /*var i = 0
+            while(i < combo_list_view.adapter.count) {
+                val item = combo_list_view.adapter.getItem(i)
+                //Toast.makeText(context, "type of item: " + item.javaClass.name, Toast.LENGTH_LONG).show()
+                i++
+                if(item is DrumPlaybackItemModel && item.isChecked) {
+                    Toast.makeText(context, item.fileName + " selected", Toast.LENGTH_LONG).show()
+                }
+            }*/
+        }
+        //endregion
+
         //region Switch Buttons
         combo_recordings.setOnClickListener {
             combo_list_view.adapter = comboAdapterRecording
@@ -117,6 +157,7 @@ class BeatEditingFragment : Fragment() {
         combo_beats.setOnClickListener {
             combo_list_view.adapter = comboAdapterDrum
         }
+        //endregion
 
         //region Navbar Code
         drumButton.setOnClickListener {
@@ -140,6 +181,7 @@ class BeatEditingFragment : Fragment() {
         }
         //endregion
     }
+
 
     //region Boilerplate Override Code
     // TODO: Rename method, update argument and hook method into UI event

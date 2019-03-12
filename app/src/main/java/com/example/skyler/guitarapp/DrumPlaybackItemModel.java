@@ -5,6 +5,7 @@ public class DrumPlaybackItemModel {
 
     private String fileName;
     private RecordedBeat recording;
+    private boolean checked = false;
 
     public DrumPlaybackItemModel(String filename, String serializedRecording) {
         Gson gson = new Gson();
@@ -19,5 +20,22 @@ public class DrumPlaybackItemModel {
 
     public RecordedBeat getRecording() {
         return recording;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+    public void toggleChecked() {
+        if(checked == false) {
+            checked = true;
+        }
+        else {
+            checked = false;
+        }
     }
 }
